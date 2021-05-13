@@ -15,8 +15,19 @@ body {
 	height: 100vh;
 	font: 14px 'Lucida Grande', Helvetica, Arial, sans-serif;
 	background-color: #121212;
+	color: #a7d129;
 }
 
 a {
 	color: #00b7ff;
+}
+
+.header {
+	margin: 24px;
+	display: flex;
+	flex-direction: row;
+}
+
+.header__about_me__logo img {
+	border-radius: 50%;
 }
