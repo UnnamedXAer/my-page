@@ -1,0 +1,8 @@
+<%- include("error-start.ejs") -%>
+	<% if (typeof errTitle !== "undefined" ) { %>
+		<h3>
+			<%=errTitle%>
+		</h3>
+		<% } %>
+			<p>&lt;% "<%=msg%>" %&gt; </p>
+			<%- include("error-end.ejs") -%>

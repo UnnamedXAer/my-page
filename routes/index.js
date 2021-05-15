@@ -1,21 +1,20 @@
 var express = require('express');
 var router = express.Router();
-const { getAboutMe, getRepos } = require('../state/state');
+const { getState } = require('../state/state');
 
-router.get('/', async function (req, res, next) {
-	const repos = await getRepos();
-	const aboutMe = await getAboutMe();
-	if (!repos || !aboutMe) {
-		return next(
-			new Error('Something went wrong, some of our machinery malfunctioned 🥺')
-		);
-	}
+router.get('/', function (req, res, next) {
+	const state = getState();
 
-	res.render('index', {
+	const data = {
 		title: 'UnnamedXAer',
-		repos: repos,
-		aboutMe: aboutMe
-	});
+		repos: state.projects.repos,
+		socials: state.socials,
+		aboutMe: state.aboutMe.text,
+		logoURL: state.logoURL,
+		githubUsername: state.githubUsername
+	};
+
+	res.render('index', data);
 });
 
 module.exports = router;

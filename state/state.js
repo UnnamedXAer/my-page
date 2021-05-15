@@ -2,36 +2,118 @@ const axios = require('axios').default;
 const fs = require('fs/promises');
 const path = require('path');
 
-const REPOS_URL = 'https://api.github.com/users/unnamedxaer/repos';
-
+// app is so small and static so no need for
+// anything more the just a variable to keep
+// current informations
 const STATE = {
-	aboutMe: 'Hello',
-	repo: {}
+	aboutMe: {
+		fetchedAt: new Date(2000, 1, 1),
+		text: ''
+	},
+	projects: {
+		fetchedAt: new Date(2000, 1, 1),
+		repos: []
+	},
+	socials: {},
+	githubUsername: '',
+	logoURL: '',
+	config: {
+		env: 'development',
+		refreshStateInterval: 1000 * 60 * 60 * 24,
+		aboutMeMaxAge: 1000 * 60 * 60 * 24,
+		projectsMaxAge: 1000 * 60 * 60 * 24
+	}
 };
 
+function updateConfigTimeProp(key, envKey) {
+	let envValue = process.env[envKey];
+	let time = parseInt(envValue, 10);
+	if (Number.isFinite(time) && time !== 0) {
+		if (time < 0) {
+			time = -time;
+		}
+		STATE.config[key] = time;
+	}
+}
+
+function loadState() {
+	STATE.githubUsername = process.env['GITHUB_NAME'];
+	STATE.logoURL = process.env['LOGO_URL'];
+	STATE.config.env = process.env['NODE_ENV'];
+	updateConfigTimeProp('aboutMeMaxAge', 'ABOUT_ME_MAX_AGE');
+	updateConfigTimeProp('projectsMaxAge', 'PROJECTS_MAX_AGE');
+	updateConfigTimeProp('refreshStateInterval', 'REFRESH_STATE_INTERVAL');
+	STATE.socials = getSocials();
+
+	return refreshDynamicState();
+}
+
+async function refreshDynamicState() {
+	STATE.aboutMe = await getAboutMe();
+	STATE.projects = await getRepos();
+	console.log(new Date().toUTCString(), 'state dynamic fields refreshed');
+}
+
+function setStateInterval() {
+	setInterval(refreshDynamicState, STATE.config.refreshStateInterval);
+	console.log(new Date().toUTCString(), 'refresh state interval set');
+}
+
+function updateState(key, value) {
+	STATE[key] = value;
+	return STATE[key];
+}
+
+function getSocials() {
+	const socials = {
+		linkedIn: process.env['SOCIALS_LINKEDIN_URL']
+	};
+	return updateState('socials', socials);
+}
+
 async function getAboutMe() {
-	const maxTime = 1000 * 60 * 60 * 24;
-	const savedAboutMe = await readAboutMe();
-	if (savedAboutMe) {
-		if (Date.parse(savedAboutMe.fetchedAt) > Date.now() - maxTime) {
-			return savedAboutMe.text;
+	console.log(new Date().toUTCString(), 'getAboutMe - start');
+	if (
+		STATE.aboutMe.fetchedAt.getTime() > Date.now() - STATE.config.aboutMeMaxAge &&
+		STATE.aboutMe.text
+	) {
+		console.log(new Date().toUTCString(), 'getAboutMe - end');
+		return STATE.aboutMe;
+	}
+
+	if (STATE.config.env !== 'production') {
+		const savedAboutMe = await readAboutMe();
+		if (
+			savedAboutMe &&
+			savedAboutMe.text &&
+			savedAboutMe.fetchedAt > STATE.aboutMe.fetchedAt
+		) {
+			console.log(new Date().toUTCString(), 'getAboutMe - end');
+
+			return updateState('aboutMe', savedAboutMe);
 		}
 	}
 
 	const newAboutMe = await fetchAboutMe();
-	if (newAboutMe) {
-		savedAboutMe(newAboutMe);
-		return newAboutMe;
+	if (newAboutMe && newAboutMe.text) {
+		saveToJSONFile('aboutme', newAboutMe);
+		console.log(new Date().toUTCString(), 'getAboutMe - end');
+		return updateState('aboutMe', newAboutMe);
 	}
 
-	return savedAboutMe.text;
+	console.log(new Date().toUTCString(), 'getAboutMe - end');
+	return STATE.aboutMe;
 }
 
 async function readAboutMe() {
 	try {
 		const data = await fs.readFile('./data/aboutme.json', 'utf8');
 
-		return JSON.parse(data);
+		parsedData = JSON.parse(data);
+		return {
+			...parsedData,
+			fetchedAt: new Date(parsedData.fetchedAt)
+		};
 	} catch (err) {
 		console.error('read about me: ', err);
 	}
@@ -39,48 +121,70 @@ async function readAboutMe() {
 }
 
 async function fetchAboutMe() {
-	console.log('about to fetch about me text');
-	return null;
+	console.log('about to fetch about me');
+	return {
+		fetchedAt: new Date(2000, 1, 1),
+		text: ''
+	};
 }
 
 async function getRepos() {
-	const maxTime = 1000 * 60 * 60;
+	console.log(new Date().toUTCString(), 'getRepos - start');
+	if (
+		STATE.projects.fetchedAt.getTime() > Date.now() - STATE.config.projectsMaxAge &&
+		STATE.projects.repos
+	) {
+		console.log(new Date().toUTCString(), 'getRepos - end');
+		return STATE.projects;
+	}
 
-	const savedReposData = await readSavedRepos();
-	if (savedReposData) {
-		if (Date.parse(savedReposData.fetchedAt) > Date.now() - maxTime) {
-			return savedReposData.repos;
+	if (STATE.config.env !== 'production') {
+		const savedProjects = await readSavedProjects();
+		if (
+			savedProjects &&
+			savedProjects.repos &&
+			savedProjects.repos.length > 0 &&
+			savedProjects.fetchedAt > STATE.projects.fetchedAt
+		) {
+			console.log(new Date().toUTCString(), 'getRepos - end');
+			return updateState('projects', savedProjects);
 		}
 	}
 
-	const newRepos = await fetchRepos();
-	if (newRepos) {
+	const newRepos = await fetchProjects();
+	if (newRepos && newRepos.repos.length > 0) {
 		updateReposProps(newRepos);
 		// call save func and do not wait.
-		saveRepos(newRepos);
-		return newRepos;
+		saveToJSONFile('projects', newRepos);
+		console.log(new Date().toUTCString(), 'getRepos - end');
+		return updateState('projects', newRepos);
 	}
 
-	// return saved repos in case fetch failed.
-	return savedReposData.repos;
+	console.log(new Date().toUTCString(), 'getRepos - end');
+	return STATE.projects;
 }
 
-async function fetchRepos() {
-	console.log('about to fetch repositories');
+async function fetchProjects() {
+	const reposURL = `https://api.github.com/users/${STATE.githubUsername}/repos`;
+
+	console.log('about to fetch projects');
 	try {
-		const { data } = await axios.get(REPOS_URL);
-		return data;
+		const { data } = await axios.get(reposURL);
+		return {
+			fetchedAt: new Date(),
+			repos: data
+		};
 	} catch (err) {
-		console.error('fetch repos: ', err);
+		console.error('fetch projects: ', err);
 	}
 
 	return null;
 }
 
-function updateReposProps(repos) {
+function updateReposProps(projects) {
 	let repo;
-	for (let i = repos.length - 1; i >= 0; i--) {
-		repo = repos[i];
+	for (let i = projects.repos.length - 1; i >= 0; i--) {
+		repo = projects.repos[i];
 		repo.cssColorClass = repo.language
 			? `color-${repo.language
 					.toLowerCase()
@@ -91,13 +195,17 @@ function updateReposProps(repos) {
 	}
 }
 
-async function readSavedRepos() {
-	const dir = './data/repos.json';
+async function readSavedProjects() {
+	const dir = './data/projects.json';
 	try {
 		const data = await fs.readFile(dir, {
 			encoding: 'utf8'
 		});
-		return JSON.parse(data);
+		parsedData = JSON.parse(data);
+		return {
+			...parsedData,
+			fetchedAt: new Date(parsedData.fetchedAt)
+		};
 	} catch (err) {
 		console.error('read repos: ', err);
 	}
@@ -105,21 +213,17 @@ async function readSavedRepos() {
 	return null;
 }
 
-async function saveRepos(repos) {
-	const date = new Date();
-	const filename = 'repos.json';
+async function saveToJSONFile(fname, data) {
+	const filename = fname + '.json';
 	const dir = './data';
-	const payload = {
-		fetchedAt: date,
-		repos: repos
-	};
 
 	try {
 		await fs.mkdir(dir, { recursive: true });
 	} catch (err) {
 		if (err.code !== 'EEXIST') {
 			console.error(
-				`fail to save repos (${date.toUTCString()}): create dir: `,
+				new Date.toUTCString(),
+				`fail to save '${fname}': create dir:`,
 				err
 			);
 			return;
@@ -128,18 +232,43 @@ async function saveRepos(repos) {
 
 	try {
 		const filePath = path.join(dir, filename);
-		await fs.writeFile(filePath, JSON.stringify(payload), {
+		await fs.writeFile(filePath, JSON.stringify(data), {
 			encoding: 'utf8',
 			flag: 'w+'
 		});
-		console.log(`repos (${repos.length}) saved at ${date.toUTCString()}`);
+		console.log(new Date.toUTCString(), `'${fname}' saved`);
 	} catch (err) {
-		console.error(`fail to save repos (${date.toUTCString()}): `, err);
+		console.error(new Date.toUTCString()`fail to save '${fname}':`, err);
 	}
 }
 
+// async function saveProjects(projects) {
+// 	const filename = 'projects.json';
+// 	const dir = './data';
+
+// 	try {
+// 		await fs.mkdir(dir, { recursive: true });
+// 	} catch (err) {
+// 		if (err.code !== 'EEXIST') {
+// 			console.error(new Date.toUTCString(), `fail to save repos: create dir:`, err);
+// 			return;
+// 		}
+// 	}
+
+// 	try {
+// 		const filePath = path.join(dir, filename);
+// 		await fs.writeFile(filePath, JSON.stringify(projects), {
+// 			encoding: 'utf8',
+// 			flag: 'w+'
+// 		});
+// 		console.log(new Date.toUTCString(), `repos (${projects.length}) saved`);
+// 	} catch (err) {
+// 		console.error(new Date.toUTCString()`fail to save repos:`, err);
+// 	}
+// }
+
 module.exports = {
-	getAboutMe: getAboutMe,
-	getRepos: getRepos,
+	loadState: loadState,
+	setStateInterval: setStateInterval,
 	getState: () => STATE
 };

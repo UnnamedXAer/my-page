@@ -1,0 +1,36 @@
+<h2>Side Projects</h2>
+<section class="projects">
+	<% if (repos.length==0) { %>
+		<%- include("error.ejs", { msg: "For some reason my repos where not fetched." }); -%>
+			<% } %>
+				<% for( let i=0; i < repos.length; i++ ) { %>
+					<article class=" projects__repo">
+						<a href="<%= repos[i]['html_url'] %> " target="_blank" title="Open on GitHub">
+							<div class="projects__repo__info">
+								<h3>
+									<%= repos[i].name %>
+								</h3>
+								<p>
+									<%= repos[i].description %>
+								</p>
+
+							</div>
+							<div class="projects__repo__tags">
+								<span></span>
+							</div>
+							<div class="projects__repo__line <%= repos[i].cssColorClass %>"></div>
+							<div class="projects__repo__footer">
+								<p class="projects__repo__language">
+									<%= repos[i].language %>
+								</p>
+							</div>
+						</a>
+						<% if (repos[i].homepage) { %>
+							<a class="projects__repo__homepage" href="<%= repos[i].homepage %>" target="_blank"
+								title="Open app">
+								<i class="fas fa-external-link-alt"></i>
+							</a>
+							<% } %>
+					</article>
+					<% } %>
+</section>
