@@ -56,7 +56,11 @@ async function refreshDynamicState() {
 
 function setStateInterval() {
 	setInterval(refreshDynamicState, STATE.config.refreshStateInterval);
-	console.log(new Date().toUTCString(), 'refresh state interval set');
+	console.log(
+		new Date().toUTCString(),
+		'refresh state interval set, time:',
+		STATE.config.refreshStateInterval
+	);
 }
 
 function updateState(key, value) {
@@ -72,12 +76,10 @@ function getSocials() {
 }
 
 async function getAboutMe() {
-	console.log(new Date().toUTCString(), 'getAboutMe - start');
 	if (
 		STATE.aboutMe.fetchedAt.getTime() > Date.now() - STATE.config.aboutMeMaxAge &&
 		STATE.aboutMe.text
 	) {
-		console.log(new Date().toUTCString(), 'getAboutMe - end');
 		return STATE.aboutMe;
 	}
 
@@ -88,8 +90,6 @@ async function getAboutMe() {
 			savedAboutMe.text &&
 			savedAboutMe.fetchedAt > STATE.aboutMe.fetchedAt
 		) {
-			console.log(new Date().toUTCString(), 'getAboutMe - end');
-
 			return updateState('aboutMe', savedAboutMe);
 		}
 	}
@@ -97,11 +97,9 @@ async function getAboutMe() {
 	const newAboutMe = await fetchAboutMe();
 	if (newAboutMe && newAboutMe.text) {
 		saveToJSONFile('aboutme', newAboutMe);
-		console.log(new Date().toUTCString(), 'getAboutMe - end');
 		return updateState('aboutMe', newAboutMe);
 	}
 
-	console.log(new Date().toUTCString(), 'getAboutMe - end');
 	return STATE.aboutMe;
 }
 
@@ -115,26 +113,28 @@ async function readAboutMe() {
 			fetchedAt: new Date(parsedData.fetchedAt)
 		};
 	} catch (err) {
-		console.error('read about me: ', err);
+		console.error(new Date().toUTCString(), 'read about me: ', err);
 	}
 	return null;
 }
 
 async function fetchAboutMe() {
-	console.log('about to fetch about me');
-	return {
-		fetchedAt: new Date(2000, 1, 1),
-		text: ''
-	};
+	console.log(new Date().toUTCString(), 'about to fetch about me');
+	try {
+		return {
+			fetchedAt: new Date(2000, 1, 1),
+			text: ''
+		};
+	} catch (err) {
+		console.error(new Date().toUTCString(), 'fetch about me:', err);
+	}
 }
 
 async function getRepos() {
-	console.log(new Date().toUTCString(), 'getRepos - start');
 	if (
 		STATE.projects.fetchedAt.getTime() > Date.now() - STATE.config.projectsMaxAge &&
 		STATE.projects.repos
 	) {
-		console.log(new Date().toUTCString(), 'getRepos - end');
 		return STATE.projects;
 	}
 
@@ -146,7 +146,6 @@ async function getRepos() {
 			savedProjects.repos.length > 0 &&
 			savedProjects.fetchedAt > STATE.projects.fetchedAt
 		) {
-			console.log(new Date().toUTCString(), 'getRepos - end');
 			return updateState('projects', savedProjects);
 		}
 	}
@@ -156,18 +155,16 @@ async function getRepos() {
 		updateReposProps(newRepos);
 		// call save func and do not wait.
 		saveToJSONFile('projects', newRepos);
-		console.log(new Date().toUTCString(), 'getRepos - end');
 		return updateState('projects', newRepos);
 	}
 
-	console.log(new Date().toUTCString(), 'getRepos - end');
 	return STATE.projects;
 }
 
 async function fetchProjects() {
 	const reposURL = `https://api.github.com/users/${STATE.githubUsername}/repos`;
 
-	console.log('about to fetch projects');
+	console.log(new Date().toUTCString(), 'about to fetch projects');
 	try {
 		const { data } = await axios.get(reposURL);
 		return {
@@ -175,7 +172,7 @@ async function fetchProjects() {
 			repos: data
 		};
 	} catch (err) {
-		console.error('fetch projects: ', err);
+		console.error(new Date().toUTCString(), 'fetch projects: ', err);
 	}
 
 	return null;
@@ -207,7 +204,7 @@ async function readSavedProjects() {
 			fetchedAt: new Date(parsedData.fetchedAt)
 		};
 	} catch (err) {
-		console.error('read repos: ', err);
+		console.error(new Date().toUTCString(), 'read repos: ', err);
 	}
 
 	return null;
@@ -241,31 +238,6 @@ async function saveToJSONFile(fname, data) {
 		console.error(new Date.toUTCString()`fail to save '${fname}':`, err);
 	}
 }
-
-// async function saveProjects(projects) {
-// 	const filename = 'projects.json';
-// 	const dir = './data';
-
-// 	try {
-// 		await fs.mkdir(dir, { recursive: true });
-// 	} catch (err) {
-// 		if (err.code !== 'EEXIST') {
-// 			console.error(new Date.toUTCString(), `fail to save repos: create dir:`, err);
-// 			return;
-// 		}
-// 	}
-
-// 	try {
-// 		const filePath = path.join(dir, filename);
-// 		await fs.writeFile(filePath, JSON.stringify(projects), {
-// 			encoding: 'utf8',
-// 			flag: 'w+'
-// 		});
-// 		console.log(new Date.toUTCString(), `repos (${projects.length}) saved`);
-// 	} catch (err) {
-// 		console.error(new Date.toUTCString()`fail to save repos:`, err);
-// 	}
-// }
 
 module.exports = {
 	loadState: loadState,
