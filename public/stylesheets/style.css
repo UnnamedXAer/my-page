@@ -8,7 +8,9 @@
 	--secondary-rgb: 51, 51, 51;
 	--accent: #f5df2e;
 	--color: #bebdbd;
+	--color-link: #00b7ffc4;
 }
+
 
 html {
 	scroll-behavior: smooth;
@@ -37,88 +39,9 @@ code {
 }
 
 a {
-	color: #00b7ffc4;
+	color: var(--color-link);
 }
 
-.header,
-.header_placeholder {
-	height: 4rem;
-	width: 100%;
-}
-
-.header {
-	z-index: 5;
-	top: 0;
-	position: fixed;
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	align-items: center;
-	background-color: #333333;
-	padding-left: 3rem;
-	padding-right: 3rem;
-}
-
-.shadow {
-	-webkit-box-shadow: 0 3px 5px rgba(8, 8, 8, 0.3);
-	-moz-box-shadow: 0 3px 5px rgba(8, 8, 8, 0.3);
-	box-shadow: 0 3px 5px rgba(8, 8, 8, 0.3);
-}
-
-.header nav {
-	flex: 1;
-	max-width: 40rem;
-	display: flex;
-	flex-direction: row;
-	font-size: 1.5em;
-	justify-content: flex-end;
-}
-
-.header nav div {
-	display: flex;
-	flex-direction: row;
-	flex: 1;
-}
-
-.header nav a {
-	text-decoration: none;
-	padding: 1rem 1.5rem;
-	position: relative;
-	flex: 1;
-}
-
-.header nav a:hover {
-	transition: 200ms;
-	transform: scale(1.15);
-	position: relative;
-}
-
-.header nav a:hover::before {
-	content: '';
-	position: absolute;
-	bottom: -0.3rem;
-	height: 0.2rem;
-	left: 10%;
-	right: 60%;
-	background-color: var(--accent);
-	transform: rotate(-20deg);
-	-webkit-box-shadow: 0 3px 5px rgba(8, 8, 8, 0.3);
-	-moz-box-shadow: 0 3px 5px rgba(8, 8, 8, 0.3);
-	box-shadow: 0 3px 5px rgba(8, 8, 8, 0.3);
-}
-
-.header nav a:hover::after {
-	content: '';
-	position: absolute;
-	bottom: -0.3rem;
-	height: 0.2rem;
-	left: 40%;
-	right: 20%;
-	background-color: var(--accent);
-	-webkit-box-shadow: 0 3px 5px rgba(8, 8, 8, 0.3);
-	-moz-box-shadow: 0 3px 5px rgba(8, 8, 8, 0.3);
-	box-shadow: 0 3px 5px rgba(8, 8, 8, 0.3);
-}
 
 .main {
 	max-width: 1080px;
@@ -146,7 +69,7 @@ a {
 	margin-left: 1rem;
 	border-radius: 50%;
 	border: 0.3rem solid white;
-	box-shadow: 0 3px 6px rgba(255, 255, 255, 0.2);
+	box-shadow: 0 3px 6px rgba(255, 255, 255, 0.ap2);
 }
 
 .socials {
@@ -166,5 +89,3 @@ a {
 .socials__link i:hover {
 	transform: scale(1.2);
 }
-
-

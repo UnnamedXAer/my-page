@@ -1,23 +1,57 @@
 @media only screen and (max-width: 900px) {
 	.header nav {
-		font-size: 1.3em;
+		font-size: 1.1em;
 		justify-content: flex-end;
 	}
-
 }
 
 @media only screen and (max-width: 700px) {
 	.header,
 	.header_placeholder {
-		height: 6rem;
 		padding-right: 0;
+		transition: 400ms;
+	}
+
+	.header__burger {
+		display: flex;
 	}
 
 	.header nav {
+		position: absolute;
+		top: 100%;
+		right: 0;
+		height: 100vh;
+		transform: translateX(100%);
 		flex-direction: column;
+		align-items: flex-end;
+		justify-content: flex-start;
+		background-color: var(--secondary);
+		transition: transform 0.2s;
+	}
+
+	.header nav a {
+		padding: 1rem 0.7rem;
+		margin-right: 2rem;
+		margin-left: 2rem;
+		min-width: 180px;
+		max-width: 90vw;
+		-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+		-webkit-tap-highlight-color: transparent;
+	}
+	.header nav a:hover {
+		transform: unset;
+	}
+
+	.header nav a:active {
+		background-color: rgba(127, 255, 212, 0.2);
+		transform: scale(1.1);
+		outline: none;
+	}
+
+	.header nav a::before,
+	.header nav a::after {
+		display: none;
 		font-size: 1em;
-		max-width: 18rem;
-		justify-content: flex-end;
 	}
 
 	.main {
@@ -39,11 +73,8 @@
 	.projects a:hover {
 		transform: scale(1.05);
 	}
-}
-
-@media only screen and (max-width: 700px) {
 	.about_me {
-		font-size: 1.2rem;
+		font-size: 1.2em;
 	}
 }
 
@@ -51,5 +82,9 @@
 	.about_me {
 		padding: 2em 1.3em;
 		font-size: 1.2rem;
+	}
+
+	.header nav {
+		font-size: 0.8em;
 	}
 }

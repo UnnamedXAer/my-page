@@ -1,10 +1,12 @@
 <header class="header shadow">
-	<div><i class="far fa-file-code fa-2x"></i></div>
-	<nav>
-		<div>
-			<a href="#about_me">
-				About&nbsp;Me
-			</a>
+	<div class="header__backdrop" onclick="hideMenu()"></div>
+	<a class="header__logo" href="/#🔝"><i class="far fa-file-code fa-2x"></i></a>
+	<div class="header__burger" onclick="toggleMenu(this)">
+		<div class="header__burger_1"></div>
+		<div class="header__burger_2"></div>
+		<div class="header__burger_2"></div>
+	</div>
+	<nav onclick="hideMenu()">
 		<a href="/#about📖">
 			About&nbsp;Me
 		</a>
@@ -22,3 +24,34 @@
 		</a>
 	</nav>
 </header>
+<div class="header_placeholder" id="🔝"></div>
+<script>
+	function headerResizeOnScroll() {
+		if (document.body.scrollTop > 80 || document.documentElement.scrollTop > 80) {
+			document.querySelector(".header").classList.add("header_small");
+		} else {
+			document.querySelector(".header").classList.remove("header_small");
+		}
+	}
+	document.body.addEventListener('scroll', headerResizeOnScroll);
+
+	function toggleMenu(burger) {
+		if (burger.classList.contains("active")) {
+			hideMenu(burger);
+			return
+		}
+		burger.classList.add("active");
+		burger.nextElementSibling.classList.add("active");
+		burger.previousElementSibling.previousElementSibling.classList.add("active");
+	}
+
+	function hideMenu(burger) {
+		if (!burger) {
+			burger = document.querySelector(".header__burger");
+		}
+		burger.classList.remove("active");
+		burger.nextElementSibling.classList.remove("active");
+		burger.previousElementSibling.previousElementSibling.classList.remove("active");
+	}
+
+</script>
