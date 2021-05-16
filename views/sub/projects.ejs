@@ -1,20 +1,23 @@
-<h2>Side Projects</h2>
-<section class="projects">
-	<% if (repos.length==0) { %>
-		<%- include("error.ejs", { msg: "For some reason my repos where not fetched." }); -%>
-			<% } %>
-				<% for( let i=0; i < repos.length; i++ ) { %>
-					<article class=" projects__repo">
-						<a href="<%= repos[i]['html_url'] %> " target="_blank" title="Open on GitHub">
-							<div class="projects__repo__info">
-								<h3>
-									<%= repos[i].name %>
-								</h3>
-								<p>
-									<%= repos[i].description %>
-								</p>
+<section class="projects" id="projects">
+	<h2>My Repos</h2>
+	<div class="projects__repos_wrapper">
+		<% if (repos.length==0) { %>
+			<%- include("error.ejs", { msg: "For some reason my repos where not fetched (or I don't have ony?)." }); -%>
+				<% } %>
+					<% for( let i=0; i < repos.length; i++ ) { %>
+						<article class=" projects__repo">
+							<a href="<%= repos[i]['html_url'] %> " target="_blank" title="Open on GitHub">
+								<div class="projects__repo__info">
+									<h3>
+										<%= repos[i].name %>
+									</h3>
+									<p>
+										<%= repos[i].description %>
+									</p>
 
-							</div>
+								</div>
+							</a>
+
 							<div class="projects__repo__tags">
 								<span></span>
 							</div>
@@ -24,13 +27,43 @@
 									<%= repos[i].language %>
 								</p>
 							</div>
-						</a>
-						<% if (repos[i].homepage) { %>
-							<a class="projects__repo__homepage" href="<%= repos[i].homepage %>" target="_blank"
-								title="Open app">
-								<i class="fas fa-external-link-alt"></i>
-							</a>
-							<% } %>
-					</article>
-					<% } %>
+							<% if (repos[i].homepage) { %>
+								<a class="projects__repo__homepage" href="<%= repos[i].homepage %>" target="_blank"
+									title="Open app">
+									<i class="fas fa-external-link-alt"></i>
+								</a>
+								<% } %>
+						</article>
+						<% } %>
+	</div>
+	<p class="projects__show_all" onclick="expandProjects(this)">show all...</p>
+	<script>
+		var reposLen = <%= repos.length %>;
+		function setProjectShowAllDisplay(value) {
+			document.querySelector(".projects__show_all").style.display = value
+		}
+		function projectsDisplayShowAll() {
+			if (window.innerWidth <= 700) {
+				if (reposLen > 2) {
+					setProjectShowAllDisplay("block");
+				}
+				return;
+			}
+			if (reposLen <= 4) {
+				setProjectShowAllDisplay("none");
+				return
+			}
+			setProjectShowAllDisplay("block");
+			return
+		}
+		projectsDisplayShowAll()
+		if (reposLen > 2) {
+			window.addEventListener("resize", projectsDisplayShowAll)
+			function expandProjects(target) {
+				window.removeEventListener("resize", projectsDisplayShowAll)
+				document.querySelector(".projects__repos_wrapper").style.maxHeight = "unset";
+				target.style.display = "none";
+			}
+		}
+	</script>
 </section>

@@ -1,23 +1,4 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-	<title>
-		<%= title %>
-	</title>
-
-	<link rel="preconnect" href="https://fonts.gstatic.com">
-	<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;300;500&display=swap" rel="stylesheet">
-
-	<link rel='stylesheet' href='/stylesheets/style.css' />
-	<link rel='stylesheet' href='/stylesheets/alerts.css' />
-	<link rel='stylesheet' href='/stylesheets/github-lang-colors.css' />
-	<link rel='stylesheet' href='/stylesheets/scroll-bar.css' />
-
-	<script src="https://kit.fontawesome.com/ec2f45720e.js" crossorigin="anonymous"></script>
-</head>
-
-<body>
+<%- include("layout/head.ejs") -%>
 	<div class="header_placeholder"></div>
 	<%- include("sub/header") -%>
 
@@ -27,7 +8,5 @@
 					<%- include("sub/projects.ejs") -%>
 		</main>
 
-		<%- include("sub/footer.ejs") -%>
-</body>
-
-</html>
+		<%- include("layout/footer.ejs") -%>
+			
