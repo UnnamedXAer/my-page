@@ -1,0 +1,35 @@
+<%- include("layout/head.ejs") -%>
+	<%- include("sub/header") -%>
+
+		<main class="main">
+			<h1>Contact me</h1>
+			<form class="form" action="/contact/send" method="POST">
+				<label for="email">
+					<input type="email" name="email" id="email">
+					<% if (typeof errors==="object" && errors.email){ %>
+						<p class="contact__field_error">
+							<%= errors.email %>
+						</p>
+						<% } %>
+				</label>
+				<label for="subject">
+					<input type="text" id="subject" name="subject" />
+					<% if (typeof errors==="object" && errors.subject){ %>
+						<p class="contact__field_error">
+							<%= errors.subject %>
+						</p>
+						<% } %>
+				</label>
+				<label for="message">
+					<textarea id="message" name="message"></textarea>
+					<% if (typeof errors==="object" && errors.message){ %>
+						<p class="contact__field_error">
+							<%= errors.message %>
+						</p>
+						<% } %>
+				</label>
+				<button type="submit">Send</button>
+			</form>
+		</main>
+
+		<%- include("layout/footer.ejs") -%>
