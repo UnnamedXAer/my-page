@@ -1,4 +1,4 @@
-.error {
+.alert.error {
 	border: 0.8rem solid rgba(176, 0, 32, 0.3);
 	box-shadow: 0 3px 6px rgba(176, 0, 32, 0.2);
 	padding: 1rem;

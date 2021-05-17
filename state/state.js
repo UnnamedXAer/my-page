@@ -50,7 +50,7 @@ function loadState() {
 
 async function refreshDynamicState() {
 	STATE.aboutMe = await getAboutMe();
-	STATE.projects = await getRepos();
+	STATE.projects = await getProjects();
 	console.log(new Date().toUTCString(), 'state dynamic fields refreshed');
 }
 
@@ -130,7 +130,7 @@ async function fetchAboutMe() {
 	}
 }
 
-async function getRepos() {
+async function getProjects() {
 	if (
 		STATE.projects.fetchedAt.getTime() > Date.now() - STATE.config.projectsMaxAge &&
 		STATE.projects.repos
@@ -162,6 +162,15 @@ async function getRepos() {
 }
 
 async function fetchProjects() {
+	if (!STATE.githubUsername || STATE.githubUsername.length === 0) {
+		console.error(
+			new Date().toUTCString(),
+			'fetch projects: ',
+			'github username not defined'
+		);
+		return null;
+	}
+
 	const reposURL = `https://api.github.com/users/${STATE.githubUsername}/repos`;
 
 	console.log(new Date().toUTCString(), 'about to fetch projects');
@@ -219,7 +228,7 @@ async function saveToJSONFile(fname, data) {
 	} catch (err) {
 		if (err.code !== 'EEXIST') {
 			console.error(
-				new Date.toUTCString(),
+				new Date().toUTCString(),
 				`fail to save '${fname}': create dir:`,
 				err
 			);
@@ -233,9 +242,9 @@ async function saveToJSONFile(fname, data) {
 			encoding: 'utf8',
 			flag: 'w+'
 		});
-		console.log(new Date.toUTCString(), `'${fname}' saved`);
+		console.log(new Date().toUTCString(), `'${fname}' saved`);
 	} catch (err) {
-		console.error(new Date.toUTCString()`fail to save '${fname}':`, err);
+		console.error(new Date().toUTCString()`fail to save '${fname}':`, err);
 	}
 }
 

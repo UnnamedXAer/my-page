@@ -1,35 +1,82 @@
 <%- include("layout/head.ejs") -%>
-	<%- include("sub/header") -%>
+<%- include("sub/header") -%>
+<main class="main">
+	<h1>Contact me</h1>
+	<% if (error) { %>
+		<%- include("sub/error.ejs", {msg: error}) -%>
+	<% } %>
+	<form class="form" action="/contact" method="POST">
 
-		<main class="main">
-			<h1>Contact me</h1>
-			<form class="form" action="/contact/send" method="POST">
-				<label for="email">
-					<input type="email" name="email" id="email">
-					<% if (typeof errors==="object" && errors.email){ %>
-						<p class="contact__field_error">
-							<%= errors.email %>
-						</p>
-						<% } %>
-				</label>
-				<label for="subject">
-					<input type="text" id="subject" name="subject" />
-					<% if (typeof errors==="object" && errors.subject){ %>
-						<p class="contact__field_error">
-							<%= errors.subject %>
-						</p>
-						<% } %>
-				</label>
-				<label for="message">
-					<textarea id="message" name="message"></textarea>
-					<% if (typeof errors==="object" && errors.message){ %>
-						<p class="contact__field_error">
-							<%= errors.message %>
-						</p>
-						<% } %>
-				</label>
-				<button type="submit">Send</button>
-			</form>
-		</main>
+		<label for="email">Your Email Address
+			<input class="<%= (errors.email ? " error" :"") %>" name="email" id="email" 
+			value="<%= form.email %>" placeholder="jon.doe@example.com" />
+				<% if (errors.email){ %>
+					<p class="contact__field_error">
+						<%= errors.email %>
+					</p>
+				<% } %>
+		</label>
 
-		<%- include("layout/footer.ejs") -%>
+		<label for="subject">Subject
+			<input class="<%= (errors.subject ? " error" :"") %>" type="text" 
+			id="subject" name="subject" maxlength="100" value="<%= form.subject %>" />
+			<p class="contact__field_chars_cnt" id="subject_chars_cnt"></p>
+				<% if (errors.subject){ %>
+				<p class="contact__field_error">
+					<%= errors.subject %>
+				</p>
+			<% } %>
+		</label>
+
+		<label for="message">Message*
+			<textarea class="<%= (errors.message ? " error" :"") %>" id="message"
+				 name="message" rows=5 minlength="10" maxlength="1000" ><%= form.message %></textarea>
+			<p class="contact__field_chars_cnt" id="message_chars_cnt"></p>
+			<% if (errors.message){ %>
+				<p class="contact__field_error">
+					<%= errors.message %>
+				</p>
+			<% } %>
+		</label>
+
+		<label>
+			<div style="width: 380px; height: 120px; background-color: aliceblue;">reCAPTCHA here
+			</div>
+		</label>
+
+		<button type="submit">Send</button>
+	</form>
+	<script>
+		const fields = [
+			{
+				name: "subject",
+				maxLen: 100,
+			},{
+				name: "message",
+				maxLen: 1000
+			}
+		];
+
+		for (let i = 0; i < fields.length; i++) {
+			const target = document.querySelector(`#${fields[i].name}`);
+			window.addEventListener("keyup", () => {
+				updateFieldCharsCnt(fields[i].name, fields[i].maxLen, target);
+			});
+			updateFieldCharsCnt(fields[i].name, fields[i].maxLen, target);
+		}
+
+
+		function updateFieldCharsCnt(fldID, maxCnt, target) {
+			if (!target) {
+				target = document.querySelector("#" + fldID);
+			}
+			if (target.value.length > maxCnt) {
+				target.value = target.value.slice(0,maxCnt);
+			}
+			document.querySelector(`#${fldID}_chars_cnt`).textContent = `characters ${target.value.length}/${maxCnt}`;
+			
+		}
+	</script>
+</main>
+
+<%- include("layout/footer.ejs") -%>

@@ -1,4 +1,49 @@
 .form {
 	display: flex;
 	flex-direction: column;
+	align-items: center;
+}
+
+.form label {
+	margin: 0.3rem;
+	width: 33rem;
+	max-width: 100%;
+}
+
+.form input,
+.form textarea,
+.form button {
+	margin-top: 0.2rem;
+	font-size: 1rem;
+	padding: 0.5rem 1rem;
+	background: var(--secondary);
+	color: var(--color);
+	border: 0.2rem solid var(--color-link);
+}
+
+.form button[type='submit'] {
+	margin: 1.5rem auto 1rem auto;
+}
+
+form label {
+	display: flex;
+	flex-direction: column;
+	margin-top: 0.5rem;
+}
+
+form *.error {
+	border-color: rgba(var(--error-rgb), 0.4);
+}
+
+.contact__field_error {
+	margin-block-start: 0;
+	color: rgba(var(--error-rgb), 0.85);
+}
+
+.contact__field_chars_cnt {
+	font-size: 0.7rem;
+	font-style: oblique;
+	text-align: end;
+	margin-block-start: 0.1rem;
+	font-weight: 400;
 }
