@@ -1,18 +1,18 @@
-.form {
+.contact__form {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 }
 
-.form label {
+.contact__form label, button[type='submit'] {
 	margin: 0.3rem;
 	width: 33rem;
 	max-width: 100%;
 }
 
-.form input,
-.form textarea,
-.form button {
+.contact__form input,
+.contact__form textarea,
+.contact__form button {
 	margin-top: 0.2rem;
 	font-size: 1rem;
 	padding: 0.5rem 1rem;
@@ -21,17 +21,19 @@
 	border: 0.2rem solid var(--color-link);
 }
 
-.form button[type='submit'] {
+.contact__form button[type='submit'] {
 	margin: 1.5rem auto 1rem auto;
+	padding-top: 0.75rem;
+	padding-bottom: 0.75rem;
 }
 
-form label {
+.contact__form label {
 	display: flex;
 	flex-direction: column;
 	margin-top: 0.5rem;
 }
 
-form *.error {
+.contact__form *.error {
 	border-color: rgba(var(--error-rgb), 0.4);
 }
 

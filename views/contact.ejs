@@ -5,7 +5,7 @@
 	<% if (error) { %>
 		<%- include("sub/error.ejs", {msg: error}) -%>
 	<% } %>
-	<form class="form" action="/contact" method="POST">
+	<form class="contact__form" action="/contact" method="POST">
 
 		<label for="email">Your Email Address
 			<input class="<%= (errors.email ? " error" :"") %>" name="email" id="email" 
