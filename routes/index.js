@@ -1,7 +1,7 @@
 var express = require('express');
 const { sendEmail } = require('../email/email');
 var router = express.Router();
-const { getState } = require('../state/state');
+const { getState, getConfig } = require('../state/state');
 const { validateContactForm } = require('../validation/contact');
 
 router.get('/', function (req, res, next) {
@@ -27,12 +27,20 @@ router.post('/contact', async function (req, res, next) {
 	}
 
 	const { email, subject, message } = req.body;
-	const { errors, values } = validateContactForm(email, subject, message);
+	const reCAPTCHAResponse = req.body['g-recaptcha-response'];
+	const { errors, values } = await validateContactForm(
+		email,
+		subject,
+		message,
+		reCAPTCHAResponse,
+		req._remoteAddress
+	);
 
 	const data = {
 		title: 'UnnamedXAer - Contact',
 		errors: errors,
-		form: values
+		form: values,
+		reCAPTCHAClientKey: getConfig().reCAPTCHAClientKey
 	};
 
 	if (Object.keys(errors).length !== 0) {
@@ -47,7 +55,7 @@ router.post('/contact', async function (req, res, next) {
 		if (err.code === 'INTERNAL') {
 			data.error =
 				'Sorry, we could not send your message due to some problems on the server side, please try again later.';
-			res.render('contact', data);
+			res.render('contact', data); // @todo: redirect and pass data?
 			return;
 		}
 	}
@@ -68,7 +76,8 @@ router.get('/contact*', function (req, res, next) {
 		title: 'UnnamedXAer - Contact',
 		form: {},
 		errors: {},
-		error: null
+		error: null,
+		reCAPTCHAClientKey: getConfig().reCAPTCHAClientKey
 	};
 
 	res.render('contact', data);

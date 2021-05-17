@@ -30,7 +30,8 @@
 
 		<label for="message">Message*
 			<textarea class="<%= (errors.message ? " error" :"") %>" id="message"
-				 name="message" rows=5 minlength="10" maxlength="1000" ><%= form.message %></textarea>
+				 name="message" rows=5 minlength="10" maxlength="1000" 
+				 ><%= form.message %></textarea>
 			<p class="contact__field_chars_cnt" id="message_chars_cnt"></p>
 			<% if (errors.message){ %>
 				<p class="contact__field_error">
@@ -39,9 +40,14 @@
 			<% } %>
 		</label>
 
-		<label>
-			<div style="width: 380px; height: 120px; background-color: aliceblue;">reCAPTCHA here
-			</div>
+		<label for="reCAPTCHA">
+			<div class="g-recaptcha <%= (errors.reCAPTCHA ? " error" :"") %>"
+				 data-sitekey="<%= reCAPTCHAClientKey %>" id="reCAPTCHA"></div>
+			<% if (errors.reCAPTCHA){ %>
+				<p class="contact__field_error">
+					<%= errors.reCAPTCHA %>
+				</p>
+			<% } %>
 		</label>
 
 		<button type="submit">Send</button>
@@ -73,10 +79,12 @@
 			if (target.value.length > maxCnt) {
 				target.value = target.value.slice(0,maxCnt);
 			}
-			document.querySelector(`#${fldID}_chars_cnt`).textContent = `characters ${target.value.length}/${maxCnt}`;
+			document.querySelector(`#${fldID}_chars_cnt`)
+				.textContent = `characters ${target.value.length}/${maxCnt}`;
 			
 		}
 	</script>
+	<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </main>
 
 <%- include("layout/footer.ejs") -%>

@@ -40,6 +40,8 @@ function loadState() {
 	STATE.githubUsername = process.env['GITHUB_NAME'];
 	STATE.logoURL = process.env['LOGO_URL'];
 	STATE.config.env = process.env['NODE_ENV'];
+	STATE.config.reCAPTCHAClientKey = process.env['RECAPTCHA_CLIENT_KEY'];
+	STATE.config.reCAPTCHAServerKey = process.env['RECAPTCHA_SERVER_KEY'];
 	updateConfigTimeProp('aboutMeMaxAge', 'ABOUT_ME_MAX_AGE');
 	updateConfigTimeProp('projectsMaxAge', 'PROJECTS_MAX_AGE');
 	updateConfigTimeProp('refreshStateInterval', 'REFRESH_STATE_INTERVAL');
@@ -251,5 +253,6 @@ async function saveToJSONFile(fname, data) {
 module.exports = {
 	loadState: loadState,
 	setStateInterval: setStateInterval,
-	getState: () => STATE
+	getState: () => STATE,
+	getConfig: () => STATE.config
 };
