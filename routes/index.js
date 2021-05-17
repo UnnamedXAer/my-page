@@ -50,14 +50,12 @@ router.post('/contact', async function (req, res, next) {
 	}
 
 	try {
-		await sendEmail(values.email, values.subject, values.message);
+		await sendEmail(values);
 	} catch (err) {
-		if (err.code === 'INTERNAL') {
-			data.error =
-				'Sorry, we could not send your message due to some problems on the server side, please try again later.';
-			res.render('contact', data); // @todo: redirect and pass data?
-			return;
-		}
+		data.error =
+			'Sorry, we could not send your message due to some problems on the server side, please try again later.';
+		res.render('contact', data); // @todo: redirect and pass data?
+		return;
 	}
 
 	res.redirect('/contact/thank-you');

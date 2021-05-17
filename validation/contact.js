@@ -1,11 +1,7 @@
+const { default: validator } = require('validator');
 const { default: axios } = require('axios');
 const url = require('url');
 const { getConfig } = require('../state/state');
-
-const emailRegexpString =
-	"^[-!#$%&'*+/0-9=?A-Z^_a-z{|}~](.?[-!#$%&'*+/0-9=?A-Z^_a-z{|}~])*@[a-zA-Z](-?[a-zA-Z0-9])*(.[a-zA-Z](-?[a-zA-Z0-9])*)+$";
-
-const emailRegexp = new RegExp(emailRegexpString);
 
 async function validateContactForm(email, subject, message, reCAPTCHAResponse, remoteIP) {
 	const errors = {};
@@ -19,10 +15,12 @@ async function validateContactForm(email, subject, message, reCAPTCHAResponse, r
 		values.email = '';
 		errors.email = 'Email address is not correct - expected string';
 	} else {
-		values.email = email.trim();
-		if (email.length > 0 && !emailRegexp.test(values.email)) {
+		values.email = validator.trim(email);
+		if (values.email.length > 0 && !validator.isEmail(values.email)) {
 			errors.email =
 				'Please enter your email address in format: yourname@example.com';
+		} else {
+			values.email = values.email;
 		}
 	}
 
@@ -30,7 +28,7 @@ async function validateContactForm(email, subject, message, reCAPTCHAResponse, r
 		values.subject = '';
 		errors.subject = 'Subject is not correct - expected string';
 	} else {
-		values.subject = subject.trim();
+		values.subject = validator.trim(subject);
 		if (values.subject.length > 100) {
 			errors.subject = 'Subject max allowed length is 100 characters';
 		}
@@ -40,7 +38,7 @@ async function validateContactForm(email, subject, message, reCAPTCHAResponse, r
 		values.message = '';
 		errors.message = 'Subject is not correct - expected string';
 	} else {
-		values.message = message.trim();
+		values.message = validator.trim(message);
 		if (values.message.length < 10) {
 			errors.message =
 				'Minimum 10 characters is required - please type at least one sentence';

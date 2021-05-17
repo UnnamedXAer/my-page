@@ -21,7 +21,13 @@ const STATE = {
 		env: 'development',
 		refreshStateInterval: 1000 * 60 * 60 * 24,
 		aboutMeMaxAge: 1000 * 60 * 60 * 24,
-		projectsMaxAge: 1000 * 60 * 60 * 24
+		projectsMaxAge: 1000 * 60 * 60 * 24,
+		reCAPTCHAClientKey: '',
+		reCAPTCHAServerKey: '',
+		emailAddress: '',
+		emailPassword: '',
+		smtpHost: '',
+		smtpPort: NaN
 	}
 };
 
@@ -42,6 +48,10 @@ function loadState() {
 	STATE.config.env = process.env['NODE_ENV'];
 	STATE.config.reCAPTCHAClientKey = process.env['RECAPTCHA_CLIENT_KEY'];
 	STATE.config.reCAPTCHAServerKey = process.env['RECAPTCHA_SERVER_KEY'];
+	STATE.config.emailAddress = process.env['EMAIL_ADDRESS'];
+	STATE.config.emailPassword = process.env['EMAIL_PASSWORD'];
+	STATE.config.smtpHost = process.env['SMTP_HOST'];
+	STATE.config.smtpPort = +process.env['SMTP_PORT'];
 	updateConfigTimeProp('aboutMeMaxAge', 'ABOUT_ME_MAX_AGE');
 	updateConfigTimeProp('projectsMaxAge', 'PROJECTS_MAX_AGE');
 	updateConfigTimeProp('refreshStateInterval', 'REFRESH_STATE_INTERVAL');
