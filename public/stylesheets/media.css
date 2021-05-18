@@ -3,6 +3,11 @@
 		font-size: 1.1em;
 		justify-content: flex-end;
 	}
+
+	.alert.error{
+		border-width: 0.5rem;
+		padding: 0.5rem;
+	}
 }
 
 @media only screen and (max-width: 700px) {
@@ -62,6 +67,7 @@
 	.about_me {
 		align-items: center;
 		flex-direction: column-reverse;
+		font-size: 1.2em;
 	}
 
 	.projects__repo {
@@ -73,8 +79,15 @@
 	.projects a:hover {
 		transform: scale(1.05);
 	}
-	.about_me {
-		font-size: 1.2em;
+
+	.contact {
+		padding-left: 0.5rem;
+		padding-right: 0.5rem;
+	}
+
+	.alert.error{
+		border-width: 0.3rem;
+		padding: 0.3rem;
 	}
 }
 

@@ -1,43 +1,42 @@
 <%- include("layout/head.ejs") -%>
 <%- include("sub/header") -%>
-<main class="main">
+<main class="main contact">
 	<h1>Contact me</h1>
 	<% if (error) { %>
 		<%- include("sub/error.ejs", {msg: error}) -%>
 	<% } %>
-	<form class="contact__form" action="/contact" method="POST">
+	<form class="contact__form" action="/contact" method="POST" >
 
-		<label for="email">Your Email Address
+		<label for="email">
+			<span style="display: flex;">Your Email Address
+				<span class="contact__form__info" title="I need your email address to send a response."></span>
+			</span>
 			<input class="<%= (errors.email ? " error" :"") %>" name="email" id="email" 
-			value="<%= form.email %>" placeholder="jon.doe@example.com" />
-				<% if (errors.email){ %>
+			type="email" autocomplete="email" value="<%= form.email %>" 
+			placeholder="jon.doe@example.com" />
 					<p class="contact__field_error">
 						<%= errors.email %>
 					</p>
-				<% } %>
 		</label>
 
 		<label for="subject">Subject
 			<input class="<%= (errors.subject ? " error" :"") %>" type="text" 
-			id="subject" name="subject" maxlength="100" value="<%= form.subject %>" />
+			autocomplete="off" id="subject" name="subject" maxlength="100" 
+			value="<%= form.subject %>" />
 			<p class="contact__field_chars_cnt" id="subject_chars_cnt"></p>
-				<% if (errors.subject){ %>
 				<p class="contact__field_error">
 					<%= errors.subject %>
 				</p>
-			<% } %>
 		</label>
 
 		<label for="message">Message*
 			<textarea class="<%= (errors.message ? " error" :"") %>" id="message"
-				 name="message" rows=5 minlength="10" maxlength="1000" 
-				 ><%= form.message %></textarea>
+			name="message" rows=5 minlength="10" maxlength="1000"
+			><%= form.message %></textarea>
 			<p class="contact__field_chars_cnt" id="message_chars_cnt"></p>
-			<% if (errors.message){ %>
 				<p class="contact__field_error">
 					<%= errors.message %>
 				</p>
-			<% } %>
 		</label>
 
 		<label for="reCAPTCHA">
@@ -50,39 +49,117 @@
 			<% } %>
 		</label>
 
-		<button type="submit">Send</button>
+		<button type="submit">Send Message</button>
 	</form>
 	<script>
-		const fields = [
+		const fieldsMaxLen = [
 			{
-				name: "subject",
-				maxLen: 100,
-			},{
-				name: "message",
+				name: 'subject',
+				maxLen: 100
+			},
+			{
+				name: 'message',
 				maxLen: 1000
 			}
 		];
 
-		for (let i = 0; i < fields.length; i++) {
-			const target = document.querySelector(`#${fields[i].name}`);
-			window.addEventListener("keyup", () => {
-				updateFieldCharsCnt(fields[i].name, fields[i].maxLen, target);
+		for (let i = 0; i < fieldsMaxLen.length; i++) {
+			const target = document.querySelector(`#${fieldsMaxLen[i].name}`);
+			window.addEventListener('keyup', () => {
+				updateFieldCharsCnt(fieldsMaxLen[i].name, fieldsMaxLen[i].maxLen, target);
 			});
-			updateFieldCharsCnt(fields[i].name, fields[i].maxLen, target);
+			updateFieldCharsCnt(fieldsMaxLen[i].name, fieldsMaxLen[i].maxLen, target);
 		}
-
 
 		function updateFieldCharsCnt(fldID, maxCnt, target) {
 			if (!target) {
-				target = document.querySelector("#" + fldID);
+				target = document.querySelector('#' + fldID);
 			}
 			if (target.value.length > maxCnt) {
-				target.value = target.value.slice(0,maxCnt);
+				target.value = target.value.slice(0, maxCnt);
 			}
-			document.querySelector(`#${fldID}_chars_cnt`)
-				.textContent = `characters ${target.value.length}/${maxCnt}`;
-			
+			document.querySelector(
+				`#${fldID}_chars_cnt`
+			).textContent = `characters ${target.value.length}/${maxCnt}`;
 		}
+
+		function validateField(targetName, value) {
+			switch (targetName) {
+				case 'email':
+					const re = /\S+@\S+\.\S+/;
+					if (value.length > 0 && !re.test(value)) {
+						return 'Please enter your email address in format: yourname@example.com';
+					}
+					break;
+				case 'subject':
+					if (value.length > 100) {
+						return 'Subject max allowed length is 100 characters.';
+					}
+					break;
+				case 'message':
+					if (value.length < 10) {
+						return 'Please use at least 10 characters.';
+					} else if (value.length > 1000) {
+						return 'Subject max allowed length is 100 characters.';
+					}
+					break;
+			}
+			return '';
+		}
+
+		function setFieldError(field, error) {
+			field.parentElement.querySelector('.contact__field_error').textContent = error;
+			field.classList[error.length > 0 ? 'add' : 'remove']('error');
+		}
+
+		const validationTimeouts = {};
+		const fieldsTouched = {};
+		function onKeyUp(ev) {
+			const targetName = this.name;
+			clearTimeout(validationTimeouts[targetName]);
+
+			if (!fieldsTouched[targetName] && this.value.length === 0) {
+				return;
+			}
+			fieldsTouched[targetName] = true;
+
+			validationTimeouts[targetName] = setTimeout(() => {
+				const error = validateField(targetName, this.value);
+				setFieldError(this, error);
+			}, 700);
+		}
+
+		const fields = ['email', 'subject', 'message'];
+		for (let i = 0; i < fields.length; i++) {
+			const target = document.querySelector(`#${fields[i]}`);
+			target.addEventListener('keyup', onKeyUp.bind(target));
+		}
+
+		/** @type HTMLFormElement */
+		const form = document.querySelector('.contact__form');
+		form.addEventListener('submit', function (ev) {
+			const invalidFields = []
+			for (let i = 0; i < fields.length; i++) {
+				const target = document.querySelector(`#${fields[i]}`);
+				let err = validateField(target.name, target.value);
+				if (err.length > 0) {
+					invalidFields.push(target.id);
+				}
+
+				setFieldError(target, err);
+			}
+
+			if (invalidFields.length >0) {
+				ev.preventDefault();
+				form.querySelector("button[type=submit]").classList.add("error");
+				var rect = form.querySelector("#"+invalidFields[0]).getBoundingClientRect();
+				// @todo: fix scrolling
+				document.body.scrollTo({
+					behavior: "smooth",
+					top:document.body.scrollTop + rect.top
+				});
+			}
+		});
 	</script>
 	<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </main>

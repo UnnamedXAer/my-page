@@ -1,11 +1,14 @@
+.contact {
+	padding-top: 1rem;
+}
+
 .contact__form {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 }
 
-.contact__form label,
-button[type='submit'] {
+.contact__form label {
 	margin: 0.3rem;
 	width: 33rem;
 	max-width: 100%;
@@ -26,6 +29,8 @@ button[type='submit'] {
 	margin: 1.5rem auto 1rem auto;
 	padding-top: 0.75rem;
 	padding-bottom: 0.75rem;
+	width: 100%;
+	max-width: 20rem;
 }
 
 .contact__form label {
@@ -55,4 +60,27 @@ button[type='submit'] {
 	text-align: end;
 	margin-block-start: 0.1rem;
 	font-weight: 400;
+}
+
+.contact__form__info {
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	color: var(--color-link);
+	margin: auto 0.2rem;
+	border: 0.1rem solid rgba(var(--color-link-rgb), 0.7);
+	font-size: 0.6rem;
+	width: 0.9rem;
+	height: 0.9rem;
+	border-radius: 50%;
+	text-align: center;
+	cursor: help;
+}
+
+.contact__form__info::before {
+	content: 'i';
+}
+
+.contact__form__info:hover {
+	border-color: rgba(var(--color-link-rgb), 0.9);
 }
