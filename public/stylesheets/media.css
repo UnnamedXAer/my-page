@@ -4,7 +4,7 @@
 		justify-content: flex-end;
 	}
 
-	.alert.error{
+	.alert.error {
 		border-width: 0.5rem;
 		padding: 0.5rem;
 	}
@@ -80,12 +80,13 @@
 		transform: scale(1.05);
 	}
 
-	.contact {
+	.contact,
+	.contact_success {
 		padding-left: 0.5rem;
 		padding-right: 0.5rem;
 	}
 
-	.alert.error{
+	.alert.error {
 		border-width: 0.3rem;
 		padding: 0.3rem;
 	}

@@ -1,6 +1,12 @@
 <%- include("layout/head.ejs") -%>
 	<%- include("sub/header") -%>
+	<main class="main contact_success">
 		<h2>Thanks!</h2>
 		<p>Thank you for your message.</p>
-		<a href="/" title="Open homepage">Go to homepage.</a>
-		<%- include("layout/footer.ejs") -%>
+		<p>
+			<% if (email) { %>
+				I will reply you soon at <%= email %>.
+			<%} %>
+		</p>
+	</main>
+<%- include("layout/footer.ejs") -%>

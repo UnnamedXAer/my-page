@@ -3,6 +3,7 @@ const { sendEmail } = require('../email/email');
 var router = express.Router();
 const { getState, getConfig } = require('../state/state');
 const { validateContactForm } = require('../validation/contact');
+const url = require('url');
 
 router.get('/', function (req, res, next) {
 	const state = getState();
@@ -52,18 +53,28 @@ router.post('/contact', async function (req, res, next) {
 	try {
 		await sendEmail(values);
 	} catch (err) {
+		// @todo: send email notification to owner
 		data.error =
 			'Sorry, we could not send your message due to some problems on the server side, please try again later.';
-		res.render('contact', data); // @todo: redirect and pass data?
+		res.render('contact', data);
 		return;
 	}
 
-	res.redirect('/contact/thank-you');
+	let emailParam = '';
+	if (email.length > 0) {
+		const sp = new url.URLSearchParams({ e: email });
+		emailParam = sp.toString();
+	}
+
+	res.redirect(`/contact/success?${emailParam}`);
 });
 
-router.get('/contact/thank-you', function (req, res, next) {
+router.get('/contact/success', function (req, res, next) {
+	const email = req.query['e'];
+
 	const data = {
-		title: 'UnnamedXAer - Contact -thanks'
+		title: 'UnnamedXAer - Contact',
+		email: email
 	};
 
 	res.render('contact-success', data);
