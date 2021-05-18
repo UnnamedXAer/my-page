@@ -17,12 +17,12 @@ async function sendEmail(data) {
 
 	const content = generateEmailContent(sanitizedData);
 
+	// @i: the "from" property do not work with custom email address,
+	// @i: the mail always comes from email used in transporter
 	const mailOptions = {
-		from: sanitizedData.email
-			? sanitizedData.email
-			: `"server" <${config.appEmailAddress}>`,
+		from: `"portfolio server" <${config.appEmailAddress}>`,
 		to: config.ownerEmailAddress ? config.ownerEmailAddress : config.appEmailAddress,
-		subject: 'portfolio contact form',
+		subject: 'Message from your portfolio web app.',
 		text: content.text,
 		html: content.html
 	};
@@ -47,22 +47,28 @@ function sanitizeEmailPayload(data) {
 function generateEmailContent(data) {
 	const { email, subject, message } = data;
 	const text = [
-		`${email ? email : 'anonymous'} sent you following message:`,
+		`${email ? email : 'Anonymous user'} sent you following message:`,
 		'',
 		`Subject: ${subject ? subject : '>no_subject<'}`,
 		'',
-		'Message:',
+		'Content:',
 		message,
 		'',
+		'_____________________________________________',
 		`at: ${new Date().toUTCString()}`
 	].join();
 
 	const html = [
-		`<p>${email ? email : '>anonymous<'} sent you following message:</p>`,
+		`<p>${
+			email
+				? `<a href="mailto:${email}?subject=RE: ${subject}" >${email}</a>`
+				: 'Anonymous user'
+		} sent you following message:</p>`,
 		`<h3>Subject: ${subject ? subject : '>no_subject<'}</h3>`,
-		`<b>Message:</b>`,
+		`<b>Content:</b>`,
 		`<p>${message}</p>`,
 		'',
+		'<hr />',
 		`at: ${new Date().toUTCString()}`
 	].join('<br>');
 

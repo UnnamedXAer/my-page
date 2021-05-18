@@ -28,13 +28,14 @@ router.post('/contact', async function (req, res, next) {
 	}
 
 	const { email, subject, message } = req.body;
+	const clientIP = req._remoteAddress;
 	const reCAPTCHAResponse = req.body['g-recaptcha-response'];
 	const { errors, values } = await validateContactForm(
 		email,
 		subject,
 		message,
 		reCAPTCHAResponse,
-		req._remoteAddress
+		clientIP
 	);
 
 	const data = {
