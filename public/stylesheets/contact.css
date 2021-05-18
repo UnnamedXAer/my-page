@@ -31,6 +31,21 @@
 	padding-bottom: 0.75rem;
 	width: 100%;
 	max-width: 20rem;
+	position: relative;
+}
+
+.contact__form button[type='submit'] i {
+	position: absolute;
+	left: 0.3rem;
+	visibility: hidden;
+}
+
+.contact__form button[type='submit'].loading{
+	border-color: rgba(var(--color-rgb), 0.8);
+}
+
+.contact__form button[type='submit'].loading i {
+	visibility: visible;
 }
 
 .contact__form label {

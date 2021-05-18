@@ -9,7 +9,8 @@
 
 		<label for="email">
 			<span style="display: flex;">Your Email Address
-				<span class="contact__form__info" title="I need your email address to send a response."></span>
+				<span class="contact__form__info" 
+				title="Your email address will be used only to send the response."></span>
 			</span>
 			<input class="<%= (errors.email ? " error" :"") %>" name="email" id="email" 
 			type="email" autocomplete="email" value="<%= form.email %>" 
@@ -42,16 +43,21 @@
 		<label for="reCAPTCHA">
 			<div class="g-recaptcha <%= (errors.reCAPTCHA ? " error" :"") %>"
 				 data-sitekey="<%= reCAPTCHAClientKey %>" id="reCAPTCHA"></div>
-			<% if (errors.reCAPTCHA){ %>
 				<p class="contact__field_error">
 					<%= errors.reCAPTCHA %>
 				</p>
-			<% } %>
 		</label>
 
-		<button type="submit">Send Message</button>
+		<button type="submit">
+			<i class="fa fa-circle-o-notch fa-spin"></i>
+			Send Message
+		</button>
 	</form>
 	<script>
+
+		/** @type HTMLFormElement */
+		const form = document.querySelector('.contact__form');
+
 		const fieldsMaxLen = [
 			{
 				name: 'subject',
@@ -64,7 +70,7 @@
 		];
 
 		for (let i = 0; i < fieldsMaxLen.length; i++) {
-			const target = document.querySelector(`#${fieldsMaxLen[i].name}`);
+			const target = form.querySelector(`#${fieldsMaxLen[i].name}`);
 			window.addEventListener('keyup', () => {
 				updateFieldCharsCnt(fieldsMaxLen[i].name, fieldsMaxLen[i].maxLen, target);
 			});
@@ -73,12 +79,12 @@
 
 		function updateFieldCharsCnt(fldID, maxCnt, target) {
 			if (!target) {
-				target = document.querySelector('#' + fldID);
+				target = form.querySelector('#' + fldID);
 			}
 			if (target.value.length > maxCnt) {
 				target.value = target.value.slice(0, maxCnt);
 			}
-			document.querySelector(
+			form.querySelector(
 				`#${fldID}_chars_cnt`
 			).textContent = `characters ${target.value.length}/${maxCnt}`;
 		}
@@ -131,16 +137,26 @@
 
 		const fields = ['email', 'subject', 'message'];
 		for (let i = 0; i < fields.length; i++) {
-			const target = document.querySelector(`#${fields[i]}`);
+			const target = form.querySelector(`#${fields[i]}`);
 			target.addEventListener('keyup', onKeyUp.bind(target));
 		}
 
-		/** @type HTMLFormElement */
-		const form = document.querySelector('.contact__form');
+
+		form.querySelector("#email").addEventListener("focus", function(ev){
+			const rect = ev.target.getBoundingClientRect();
+
+			if (rect.top < 135) {
+				document.body.scrollTo({
+					behavior: "smooth",
+					top: 135
+				});
+			}
+		})
+
 		form.addEventListener('submit', function (ev) {
 			const invalidFields = []
 			for (let i = 0; i < fields.length; i++) {
-				const target = document.querySelector(`#${fields[i]}`);
+				const target = form.querySelector(`#${fields[i]}`);
 				let err = validateField(target.name, target.value);
 				if (err.length > 0) {
 					invalidFields.push(target.id);
@@ -149,16 +165,23 @@
 				setFieldError(target, err);
 			}
 
-			if (invalidFields.length >0) {
+			const submitBtn = form.querySelector("button[type=submit]");
+			if (invalidFields.length > 0) {
 				ev.preventDefault();
-				form.querySelector("button[type=submit]").classList.add("error");
+				submitBtn.classList.add("error");
 				var rect = form.querySelector("#"+invalidFields[0]).getBoundingClientRect();
-				// @todo: fix scrolling
+				
+				const topOffset = (document.body.scrollTop > 80 ? 6 : 4) * 16;
+
 				document.body.scrollTo({
 					behavior: "smooth",
-					top:document.body.scrollTop + rect.top
+					top:document.body.scrollTop + rect.top + topOffset
 				});
+				return;
 			}
+			submitBtn.classList.remove("error");
+			submitBtn.disabled = true;
+			submitBtn.classList.add("loading");
 		});
 	</script>
 	<script src="https://www.google.com/recaptcha/api.js" async defer></script>
