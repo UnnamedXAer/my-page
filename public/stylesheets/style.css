@@ -8,7 +8,8 @@
 	--secondary-rgb: 51, 51, 51;
 	--accent: #f5df2e;
 	--color: #bebdbd;
-	--color-link: #00b7ffc4;
+	--color-link: #0098d4;
+	--color-link-rgb: 0, 152, 212;
 	--error: #b00020;
 	--error-rgb: 176, 0, 32;
 }
@@ -26,14 +27,8 @@ body {
 	height: 100vh;
 	overflow: hidden;
 	color: var(--color);
-}
-
-body {
-	width: 100vw;
-	font: 14px;
 	font-family: 'Roboto Mono', monospace;
 	background: var(--main);
-	overflow-y: auto;
 }
 
 code {
@@ -44,12 +39,16 @@ a {
 	color: var(--color-link);
 }
 
+.root{
+	width: 100%;
+	max-height: 100%;
+	overflow-y: auto;
+}
 
 .main {
 	max-width: 1080px;
-	min-height: 100vh;
 	margin: 0 auto;
-	min-height: 100%;
+	height: 100%;
 	padding: 4rem 2rem;
 }
 
