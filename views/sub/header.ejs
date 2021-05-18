@@ -1,12 +1,12 @@
 <header class="header shadow">
 	<div class="header__backdrop" onclick="hideMenu()"></div>
 	<a class="header__logo" href="/#🔝"><i class="far fa-file-code fa-2x"></i></a>
-	<div class="header__burger" onclick="toggleMenu(this)">
-		<div class="header__burger_1"></div>
-		<div class="header__burger_2"></div>
-		<div class="header__burger_2"></div>
+	<div class="header__burger" onclick="toggleMenu(this)" role="button" tabindex="0" aria-label="menu">
+		<div></div>
+		<div></div>
+		<div></div>
 	</div>
-	<nav onclick="hideMenu()">
+	<nav onclick="navOnClick(event)">
 		<a href="/#about📖">
 			About&nbsp;Me
 		</a>
@@ -36,23 +36,81 @@
 	document.body.addEventListener('scroll', headerResizeOnScroll);
 
 	function toggleMenu(burger) {
-		if (burger.classList.contains("active")) {
-			hideMenu(burger);
-			return
+		setMenuAvailability(burger, !burger.classList.contains("active"));
+	}
+
+	function setMenuAvailability(burger, setActive,) {
+		const classToggleMethod = setActive ? 'add' : 'remove'
+		const tabIdx = setActive ? "0" : "-1"
+		const navLinks = burger.nextElementSibling.children;
+		for (let i = 0; i < navLinks.length; i++) {
+			navLinks[i].setAttribute("tabIndex", tabIdx);
 		}
-		burger.classList.add("active");
-		burger.nextElementSibling.classList.add("active");
-		burger.previousElementSibling.previousElementSibling.classList.add("active");
+
+		burger.classList[classToggleMethod]("active");
+		burger.nextElementSibling.classList[classToggleMethod]("active");
+		burger.previousElementSibling.previousElementSibling.classList[classToggleMethod]("active");
+	}
+
+	function navOnClick(ev) {
+		if (ev.target.nodeName === "A") {
+			setMenuAvailability(ev.currentTarget.previousElementSibling, false);
+		}
 	}
 
 	function hideMenu(burger) {
 		if (!burger) {
 			burger = document.querySelector(".header__burger");
 		}
-		burger.classList.remove("active");
-		burger.nextElementSibling.classList.remove("active");
-		burger.previousElementSibling.previousElementSibling.classList.remove("active");
+		setMenuAvailability(burger, false);
 	}
+
+	function burgerOnKeyUp(ev) {
+		if (ev.keyCode === 32) {
+			toggleMenu(ev.target);
+			ev.preventDefault();
+		}
+	}
+
+	(function () {
+		const header = document.querySelector(".header");
+
+		header.addEventListener("keyup", function (ev) {
+			if (ev.keyCode === 27) {
+				setMenuAvailability(header.querySelector(".header__burger"), false);
+			}
+		})
+
+		const burger = header.querySelector(".header__burger");
+		setMenuAvailability(burger, false);
+
+		burger.addEventListener("keyup", burgerOnKeyUp);
+
+		const nav = header.querySelector("nav");
+		nav.addEventListener("keyup",function(ev){
+			if (ev.target.nodeName === "A") {
+					if (ev.keyCode === 32) {
+						ev.target.click();
+					}
+				}
+		});
+
+		const navLinks = nav.querySelectorAll("a")
+		if (navLinks.length > 0) {
+			navLinks[navLinks.length - 1].addEventListener("keydown", function (ev) {
+				if (ev.keyCode === 9) {
+					if (window.innerWidth <= 700) {
+						ev.preventDefault(); // prevent from jumping to burger 
+						//and automatically to the next target most likely by keyup
+						const bb = document.querySelector(".header__burger");
+						bb.focus();
+					}
+					return
+				}
+			});
+		}
+
+	})();
 
 </script>
 <div class="root">

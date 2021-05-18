@@ -26,11 +26,12 @@
 		top: 100%;
 		right: 0;
 		height: 100vh;
-		transform: translateX(100%);
+		padding-top: 0.3rem;
 		flex-direction: column;
 		align-items: flex-end;
 		justify-content: flex-start;
 		background-color: var(--secondary);
+		transform: translateX(100%);
 		transition: transform 0.2s;
 	}
 
