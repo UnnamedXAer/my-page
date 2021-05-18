@@ -10,8 +10,8 @@ async function sendEmail(data) {
 		host: config.smtpHost,
 		port: config.smtpPort,
 		auth: {
-			user: config.emailAddress,
-			pass: config.emailPassword
+			user: config.appEmailAddress,
+			pass: config.appEmailPassword
 		}
 	});
 
@@ -20,8 +20,8 @@ async function sendEmail(data) {
 	const mailOptions = {
 		from: sanitizedData.email
 			? sanitizedData.email
-			: `"server" <${config.emailAddress}>`,
-		to: config.emailAddress,
+			: `"server" <${config.appEmailAddress}>`,
+		to: config.ownerEmailAddress ? config.ownerEmailAddress : config.appEmailAddress,
 		subject: 'portfolio contact form',
 		text: content.text,
 		html: content.html
