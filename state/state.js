@@ -17,7 +17,7 @@ const STATE = {
 	socials: {},
 	githubUsername: '',
 	logoURL: '',
-	educations: [],
+	education: [],
 	config: {
 		env: 'development',
 		refreshStateInterval: 1000 * 60 * 60 * 24,
@@ -44,7 +44,7 @@ function updateConfigTimeProp(key, envKey) {
 	}
 }
 
-function loadState() {
+async function loadState() {
 	STATE.githubUsername = process.env['GITHUB_NAME'];
 	STATE.logoURL = process.env['LOGO_URL'];
 	STATE.config.env = process.env['NODE_ENV'];
@@ -59,7 +59,7 @@ function loadState() {
 	updateConfigTimeProp('projectsMaxAge', 'PROJECTS_MAX_AGE');
 	updateConfigTimeProp('refreshStateInterval', 'REFRESH_STATE_INTERVAL');
 	STATE.socials = getSocials();
-	STATE.educations = getEducations();
+	STATE.education = await getEducation();
 
 	return refreshDynamicState();
 }
@@ -79,14 +79,51 @@ function setStateInterval() {
 	);
 }
 
-function getEducations() {
-	// @todo:
-	const educations = [];
-	for (let i = 0; i < 2; i++) {
-		educations.push(`Lorem ipsum dolor sit amet, quo ei simul congue exerci, ad nec admodum perfecto mnesarchum, vim ea mazim
-		fierent detracto.`);
+async function getEducation() {
+	if (STATE.education.length > 0) {
+		return STATE.education;
 	}
-	return educations;
+
+	if (STATE.config.env !== 'production') {
+		const savedEducation = await readEducation();
+		if (savedEducation && savedEducation.length > 0) {
+			return updateState('education', savedEducation);
+		}
+	}
+
+	const newEducation = await fetchEducation();
+	if (newEducation && newEducation.length > 0) {
+		// saveToJSONFile('education', newEducation);
+		return updateState('education', newEducation);
+	}
+
+	return STATE.education;
+}
+async function readEducation() {
+	try {
+		const data = await fs.readFile('./data/education.json', 'utf8');
+
+		const parsedData = JSON.parse(data);
+		const edu = parsedData.map((edu) => ({
+			school: edu.school,
+			startDate: new Date(edu.startDate),
+			finishDate: new Date(edu.finishDate),
+			moreInfo: edu.moreInfo
+		}));
+		return edu;
+	} catch (err) {
+		console.error(new Date().toUTCString(), 'read education: ', err);
+	}
+	return null;
+}
+
+async function fetchEducation() {
+	console.log(new Date().toUTCString(), 'about to fetch education');
+	try {
+		return [];
+	} catch (err) {
+		console.error(new Date().toUTCString(), 'fetch education:', err);
+	}
 }
 
 function updateState(key, value) {

@@ -8,7 +8,7 @@ const url = require('url');
 
 router.get('/', function (req, res, next) {
 	const state = getState();
-
+	
 	const data = {
 		title: 'UnnamedXAer',
 		repos: state.projects.repos,
@@ -16,7 +16,7 @@ router.get('/', function (req, res, next) {
 		aboutMe: state.aboutMe.text,
 		logoURL: state.logoURL,
 		githubUsername: state.githubUsername,
-		educations: state.educations
+		education: state.education
 	};
 
 	res.render('index', data);

@@ -7,6 +7,7 @@
 	--secondary: #333333;
 	--secondary-rgb: 51, 51, 51;
 	--accent: #f5df2e;
+	--accent-rgb: 245, 223, 46;
 	--color: #bebdbd;
 	--color-link: #0098d4;
 	--color-link-rgb: 0, 152, 212;
@@ -50,6 +51,10 @@ a {
 	margin: 0 auto;
 	min-height: 100%;
 	padding: 4rem 2rem;
+}
+
+.main>section>h2{
+	margin-left: 1rem;
 }
 
 .socials {
