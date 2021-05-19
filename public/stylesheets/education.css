@@ -1,0 +1,47 @@
+.education {
+	margin-bottom: 1rem;
+}
+.education__timeline {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	flex-wrap: nowrap;
+	max-width: 25rem;
+	width: 100%;
+}
+
+.education__timeline::before {
+	content: '';
+	position: absolute;
+	top: 1.5rem;
+	left: -2rem;
+	/* bottom: 0; */
+	height: calc(100% + 1rem);
+	width: 0.6rem;
+	background: rgba(145, 145, 250, 0.226);
+}
+
+
+.education__timeline article {
+	position: relative;
+	border: 0.2rem solid rgba(216, 166, 3, 0.527);
+	border-radius: 0.7rem;
+	padding: 1rem;
+	margin-top: 1.5rem;
+	color: burlywood;
+}
+
+.education__timeline article:first{
+	margin-top: 0;
+}
+
+.education__timeline article::before {
+	content: '';
+	height: 1.1rem;
+	width: 1.1rem;
+	border-radius: 50%;
+	background-color: rgba(145, 145, 250, 0.226);
+	position: absolute;
+	left: -1.5rem;
+	top: 0.5rem;
+}

@@ -17,6 +17,7 @@ const STATE = {
 	socials: {},
 	githubUsername: '',
 	logoURL: '',
+	educations: [],
 	config: {
 		env: 'development',
 		refreshStateInterval: 1000 * 60 * 60 * 24,
@@ -58,6 +59,7 @@ function loadState() {
 	updateConfigTimeProp('projectsMaxAge', 'PROJECTS_MAX_AGE');
 	updateConfigTimeProp('refreshStateInterval', 'REFRESH_STATE_INTERVAL');
 	STATE.socials = getSocials();
+	STATE.educations = getEducations();
 
 	return refreshDynamicState();
 }
@@ -75,6 +77,16 @@ function setStateInterval() {
 		'refresh state interval set, time:',
 		STATE.config.refreshStateInterval
 	);
+}
+
+function getEducations() {
+	// @todo:
+	const educations = [];
+	for (let i = 0; i < 2; i++) {
+		educations.push(`Lorem ipsum dolor sit amet, quo ei simul congue exerci, ad nec admodum perfecto mnesarchum, vim ea mazim
+		fierent detracto.`);
+	}
+	return educations;
 }
 
 function updateState(key, value) {
@@ -167,12 +179,25 @@ async function getProjects() {
 	const newRepos = await fetchProjects();
 	if (newRepos && newRepos.repos.length > 0) {
 		updateReposProps(newRepos);
+		sortRepos(newRepos);
 		// call save func and do not wait.
 		saveToJSONFile('projects', newRepos);
 		return updateState('projects', newRepos);
 	}
 
 	return STATE.projects;
+}
+
+function sortRepos(reposData) {
+	return {
+		...reposData,
+		repos: reposData.repos.sort(function (a, b) {
+			const ad = Date.parse(a['pushed_at']);
+			const bd = Date.parse(b['pushed_at']);
+			const num = bd - ad;
+			return num;
+		})
+	};
 }
 
 async function fetchProjects() {
