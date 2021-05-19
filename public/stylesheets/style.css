@@ -14,7 +14,6 @@
 	--error-rgb: 176, 0, 32;
 }
 
-
 html {
 	scroll-behavior: smooth;
 }
@@ -45,34 +44,12 @@ a {
 	color: var(--color-link);
 }
 
-
 .main {
 	max-width: 1080px;
 	min-height: 100vh;
 	margin: 0 auto;
 	min-height: 100%;
 	padding: 4rem 2rem;
-}
-
-.about_me {
-	padding: 3em 2em;
-	display: flex;
-	flex-direction: row;
-	background-color: rgba(var(--secondary-rgb), 0.7);
-	color: var(--accent);
-	font-size: 1.5rem;
-	font-weight: 300;
-}
-
-.about_me h1 {
-	font-weight: 500;
-}
-
-.about_me__logo img {
-	margin-left: 1rem;
-	border-radius: 50%;
-	border: 0.3rem solid white;
-	box-shadow: 0 3px 6px rgba(255, 255, 255, 0.ap2);
 }
 
 .socials {

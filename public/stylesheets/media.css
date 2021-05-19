@@ -4,6 +4,10 @@
 		justify-content: flex-end;
 	}
 
+	.about_me{
+		font-size: 1.4rem;
+	}
+
 	.alert.error {
 		border-width: 0.5rem;
 		padding: 0.5rem;
@@ -66,8 +70,6 @@
 	}
 
 	.about_me {
-		align-items: center;
-		flex-direction: column-reverse;
 		font-size: 1.2em;
 	}
 
@@ -96,7 +98,10 @@
 @media only screen and (max-width: 400px) {
 	.about_me {
 		padding: 2em 1.3em;
-		font-size: 1.2rem;
+		font-size: 1.1rem;
+		display: flex;
+		align-items: center;
+		flex-direction: column;
 	}
 
 	.header nav {

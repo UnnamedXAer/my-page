@@ -1,0 +1,37 @@
+
+.about_me {
+	padding: 3em 2em;
+	/* display: flex; */
+	/* flex-direction: row; */
+	background-color: rgba(var(--secondary-rgb), 0.7);
+	color: var(--accent);
+	font-size: 1.5rem;
+	font-weight: 300;
+}
+
+.about_me h1 {
+	font-weight: 500;
+}
+
+
+.about_me__text{
+	text-align: justify;
+}
+
+.about_me__logo {
+	float: right;
+	shape-outside: circle();
+	background-position: center;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-color: aliceblue;
+	
+	min-width: 175px;
+	min-height: 175px;
+	border: 0.3rem solid aliceblue;
+	border-radius: 50%;
+
+	margin-left: 2rem;
+	margin-bottom: 1rem;
+	box-shadow: 0 3px 6px rgba(255, 255, 255, 0.2);
+}
