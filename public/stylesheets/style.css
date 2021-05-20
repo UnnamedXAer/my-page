@@ -75,20 +75,41 @@ a {
 	transform: scale(1.2);
 }
 
-.backdrop.active {
+.backdrop {
 	z-index: 10;
 	position: absolute;
 	left: 0;
 	top: 0;
 	width: 100vw;
 	height: 100vh;
+	transform: translate(-103%, -30%);
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	outline: none;
+}
+
+.backdrop.active {
+	animation: backdrop ease 200ms forwards;
+}
+
+@keyframes backdrop {
+	0% {
+		opacity: 0;
+
+		transform: translate(-30%, -30%) scale(0.25);
+	}
+	30% {
+		opacity: 0.2;
+	}
+	100% {
+		opacity: 1;
+		transform: translate(0, 0) scale(1);
+	}
 }
 
 .backdrop__mask {
-	transform: translate(-100%, -100%);
+	transform: translate(-103%, -30%);
 	z-index: 8;
 	position: absolute;
 	width: 100vw;
@@ -102,24 +123,24 @@ a {
 }
 
 .backdrop__mask.active {
-	animation: mask  ease 150ms forwards;
+	animation: mask ease 150ms forwards;
 }
 
 @keyframes mask {
 	0% {
 		opacity: 0;
-		transform: translate(50, 50);
-		width: 10%;
-		height: 10%;
+		transform: translate(0, 0);
+		width: 100%;
+		height: 100%;
 	}
-	50% {
+	30% {
 		opacity: 0.1;
 	}
 	100% {
 		opacity: 0.55;
-		transform: translate(0, 0);
 		width: 100%;
 		height: 100%;
+		transform: translate(0, 0);
 	}
 }
 
@@ -133,6 +154,12 @@ a {
 }
 
 .backdrop__content > * {
+	display: none;
 	max-width: 90vw;
 	max-height: 90vh;
+	cursor: pointer;
+}
+
+.backdrop.active .backdrop__content > * {
+	display: block;
 }
