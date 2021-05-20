@@ -1,16 +1,17 @@
 <section class="skills" id="skills🔨">
 	<h2>Tech Stack</h2>
 	<picture class="skills__tech">
-		<source media="(min-width: 900px)" srcset="/images/techStack_l.png">
-		<source media="(min-width: 700px)" srcset="/images/techStack_m.png">
-		<source media="(min-width: 400px)" srcset="/images/techStack_s.png">
-		<img src="/images/tech_stack_s.png">
+		<source media="(max-width: 600px)" srcset="/images/programming-por.png">
+		<source srcset="/images/programming-land.png">
+		<img src="/images/programming.png">
 	</picture>
 
 	<script defer>
 		document.querySelector(".skills__tech img")
 			.addEventListener("click", function (ev) {
-
+				const copy = ev.currentTarget.cloneNode(true);
+				copy.style.padding = "0.15rem dashed var(--color-link)"
+				const hideBackdrop = showBackdrop(copy);
 			});
 	</script>
 </section>
