@@ -1,0 +1,9 @@
+.skills__tech{
+	display: flex;
+	justify-content: center;
+}
+
+.skills__tech img {
+	max-width: 100%;
+	max-height: calc(100vh - 6rem);
+}

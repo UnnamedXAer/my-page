@@ -53,7 +53,7 @@ a {
 	padding: 4rem 2rem;
 }
 
-.main>section>h2{
+.main > section > h2 {
 	margin-left: 1rem;
 }
 
@@ -73,4 +73,20 @@ a {
 
 .socials__link i:hover {
 	transform: scale(1.2);
+}
+
+.backdrop {
+	z-index: 9;
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgb(49, 0, 128);
+
+	transition: 300ms;
+}
+
+.backdrop.active {
+	opacity: 0.7;
 }

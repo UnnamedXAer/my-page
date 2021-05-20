@@ -14,6 +14,10 @@ const STATE = {
 		fetchedAt: new Date(2000, 1, 1),
 		repos: []
 	},
+	skills: {
+		fetchedAt: new Date(2000, 1, 1),
+		techStack: []
+	},
 	socials: {},
 	githubUsername: '',
 	logoURL: '',
@@ -67,6 +71,7 @@ async function loadState() {
 async function refreshDynamicState() {
 	STATE.aboutMe = await getAboutMe();
 	STATE.projects = await getProjects();
+	STATE.skills = await getSkills();
 	console.log(new Date().toUTCString(), 'state dynamic fields refreshed');
 }
 
@@ -77,6 +82,62 @@ function setStateInterval() {
 		'refresh state interval set, time:',
 		STATE.config.refreshStateInterval
 	);
+}
+
+async function getSkills() {
+	if (
+		STATE.skills.fetchedAt.getTime() > Date.now() - STATE.config.skillsMaxAge &&
+		STATE.skills.repos
+	) {
+		return STATE.skills;
+	}
+
+	if (STATE.config.env !== 'production') {
+		const savedSkills = await readSavedSkills();
+		if (
+			savedSkills &&
+			savedSkills.techStack &&
+			savedSkills.techStack.length > 0 &&
+			savedSkills.fetchedAt > STATE.skills.fetchedAt
+		) {
+			return updateState('skills', savedSkills);
+		}
+	}
+
+	const newRepos = await fetchSkills();
+	if (newRepos && newRepos.repos.length > 0) {
+		updateReposProps(newRepos);
+		sortRepos(newRepos);
+		saveToJSONFile('skills', newRepos);
+		return updateState('skills', newRepos);
+	}
+
+	return STATE.skills;
+}
+
+async function readSavedSkills() {
+	try {
+		const data = await fs.readFile('./data/skills.json', 'utf8');
+		const skills = JSON.parse(data);
+		return {
+			...skills,
+			fetchedAt: new Date(parsedData.fetchedAt)
+		};
+	} catch (err) {
+		console.error(new Date().toUTCString(), 'read skills: ', err);
+	}
+	return null;
+}
+
+async function fetchSkills() {
+	console.log(new Date().toUTCString(), 'about to fetch skills');
+	try {
+		return null;
+	} catch (err) {
+		console.error(new Date().toUTCString(), 'fetch skills:', err);
+	}
+
+	return null;
 }
 
 async function getEducation() {

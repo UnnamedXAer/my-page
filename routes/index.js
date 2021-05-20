@@ -12,6 +12,7 @@ router.get('/', function (req, res, next) {
 	const data = {
 		title: 'UnnamedXAer',
 		repos: state.projects.repos,
+		techStack: state.skills.techStack,
 		socials: state.socials,
 		aboutMe: state.aboutMe.text,
 		logoURL: state.logoURL,

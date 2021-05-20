@@ -1,8 +1,16 @@
 <section class="skills" id="skills🔨">
 	<h2>Tech Stack</h2>
-	<div class="skills__img">
-		<picture>
-			<img />
-		</picture>
-	</div>
+	<picture class="skills__tech">
+		<source media="(min-width: 900px)" srcset="/images/techStack_l.png">
+		<source media="(min-width: 700px)" srcset="/images/techStack_m.png">
+		<source media="(min-width: 400px)" srcset="/images/techStack_s.png">
+		<img src="/images/tech_stack_s.png">
+	</picture>
+
+	<script defer>
+		document.querySelector(".skills__tech img")
+			.addEventListener("click", function (ev) {
+
+			});
+	</script>
 </section>
