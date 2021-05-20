@@ -13,7 +13,7 @@
 	display: flex;
 	flex-direction: column;
 	flex-wrap: nowrap;
-	max-width: 25rem;
+	max-width: 30rem;
 	width: 100%;
 	padding-left: 1rem;
 }
@@ -62,4 +62,14 @@
 	top: 0.5rem;
 	left: -2.7rem;
 	border-right: 1rem solid rgba(var(--accent-rgb), 0.89);
+}
+
+.education__title{
+	font-style: oblique;
+	color: chocolate;
+}
+
+.education__moreInfo{
+	font-style: italic;
+	font-size: 0.9rem;
 }

@@ -10,13 +10,19 @@
 				
 			<% education.forEach(edu => { %>
 				<article>
-					<h5>
+					<h4>
 						<%= edu.school %>
-					</h5>
+					</h4>
+					<p class="education__title">
+						<%= edu.title %>
+					</p>
 					<p><code>
-						<%= edu.startDate.toLocaleDateString() %> - <%= edu.finishDate.toLocaleDateString() %>
+						<%= edu.startDate.toLocaleDateString("en-US", 
+						{ month: 'long',year: 'numeric' }) %> 
+						- <%= edu.finishDate.toLocaleDateString("en-US", 
+						{ month: 'long',year: 'numeric' }) %>
 					</code></p>
-					<p>
+					<p class="education__moreInfo">
 						<%= edu.moreInfo %>
 					</p>
 				</article>

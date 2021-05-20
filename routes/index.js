@@ -5,7 +5,6 @@ const { getState, getConfig } = require('../state/state');
 const { validateContactForm } = require('../validation/contact');
 const url = require('url');
 
-
 router.get('/', function (req, res, next) {
 	const state = getState();
 	

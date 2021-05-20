@@ -166,10 +166,9 @@ async function readEducation() {
 
 		const parsedData = JSON.parse(data);
 		const edu = parsedData.map((edu) => ({
-			school: edu.school,
+			...edu,
 			startDate: new Date(edu.startDate),
 			finishDate: new Date(edu.finishDate),
-			moreInfo: edu.moreInfo
 		}));
 		return edu;
 	} catch (err) {
