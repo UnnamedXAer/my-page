@@ -75,18 +75,64 @@ a {
 	transform: scale(1.2);
 }
 
-.backdrop {
-	z-index: 9;
+.backdrop.active {
+	z-index: 10;
 	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.backdrop__mask {
+	transform: translate(-100%, -100%);
+	z-index: 8;
+	position: absolute;
+	width: 100vw;
+	height: 100vh;
 	left: 0;
 	top: 0;
 	right: 0;
 	bottom: 0;
-	background-color: rgb(49, 0, 128);
-
-	transition: 300ms;
+	background-color: rgb(var(--secondary-rgb));
+	opacity: 0;
 }
 
-.backdrop.active {
-	opacity: 0.7;
+.backdrop__mask.active {
+	animation: mask  ease 150ms forwards;
+}
+
+@keyframes mask {
+	0% {
+		opacity: 0;
+		transform: translate(50, 50);
+		width: 10%;
+		height: 10%;
+	}
+	50% {
+		opacity: 0.1;
+	}
+	100% {
+		opacity: 0.55;
+		transform: translate(0, 0);
+		width: 100%;
+		height: 100%;
+	}
+}
+
+.backdrop .backdrop__content {
+	opacity: 0;
+	transition-duration: 300ms;
+}
+
+.backdrop.active .backdrop__content {
+	opacity: 1;
+}
+
+.backdrop__content > * {
+	max-width: 90vw;
+	max-height: 90vh;
 }
