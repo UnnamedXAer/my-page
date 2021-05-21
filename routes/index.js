@@ -1,22 +1,22 @@
 var express = require('express');
 const { sendEmail } = require('../email/email');
 var router = express.Router();
-const { getState, getConfig } = require('../state/state');
+const { getState } = require('../state/state');
+const config = require('../config/config');
 const { validateContactForm } = require('../validation/contact');
 const url = require('url');
 
 router.get('/', function (req, res, next) {
 	const state = getState();
-	
+
 	const data = {
-		title: 'UnnamedXAer',
-		repos: state.projects.repos,
-		techStack: state.skills.techStack,
+		title: config.title || 'Me as a Developer',
+		repos: state.repos,
 		socials: state.socials,
 		aboutMe: state.aboutMe.text,
-		logoURL: state.logoURL,
-		githubUsername: state.githubUsername,
-		education: state.education
+		education: state.education,
+		logoURL: config.logoURL,
+		githubUsername: config.githubUsername
 	};
 
 	res.render('index', data);
@@ -44,7 +44,7 @@ router.post('/contact', async function (req, res, next) {
 		title: 'UnnamedXAer - Contact',
 		errors: errors,
 		form: values,
-		reCAPTCHAClientKey: getConfig().reCAPTCHAClientKey
+		reCAPTCHAClientKey: config.reCAPTCHAClientKey
 	};
 
 	if (Object.keys(errors).length !== 0) {
@@ -89,7 +89,7 @@ router.get('/contact*', function (req, res, next) {
 		form: {},
 		errors: {},
 		error: null,
-		reCAPTCHAClientKey: getConfig().reCAPTCHAClientKey
+		reCAPTCHAClientKey: config.reCAPTCHAClientKey
 	};
 
 	res.render('contact', data);
