@@ -1,4 +1,4 @@
-.skills__tech{
+.skills__tech {
 	display: flex;
 	justify-content: center;
 }
@@ -6,7 +6,24 @@
 .skills__tech img {
 	max-width: 100%;
 	max-height: calc(100vh - 6rem);
-	border-radius: 0.3rem;
 	cursor: pointer;
 }
 
+.skills figure {
+	position: relative;
+}
+
+.skills figure figcaption {
+	font-size: 0.9em;
+	text-align: end;
+	background-color: rgba(238, 238, 238, 0.041);
+	opacity: 0.7;
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	padding-inline-end: 0.3rem;
+}
+
+.skills figure:hover figcaption {
+	opacity: 0.9;
+}
