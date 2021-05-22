@@ -99,7 +99,7 @@ async function getRepos(db) {
 			url: repoData.html_url,
 			homepage: repoData.homepage,
 			description: repoData.description,
-			topics: repoData.names,
+			topics: repoData.topics,
 			pushedAt: new Date(repoData.pushed_at),
 			cssColorClass: repoData.language
 				? `color-${repoData.language
@@ -110,7 +110,6 @@ async function getRepos(db) {
 		});
 	});
 
-	console.log(new Date().toUTCString(), 'projects: results: ', repos);
 	return sortRepos(repos);
 }
 

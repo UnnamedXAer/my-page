@@ -79,6 +79,10 @@
 		margin-right: 1rem;
 	}
 
+	.projects__repo:nth-of-type(1n + 3) {
+		display: none;
+	}
+
 	.projects a:hover {
 		transform: scale(1.05);
 	}
