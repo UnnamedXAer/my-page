@@ -32,16 +32,26 @@
 	width: 100%;
 	max-width: 20rem;
 	position: relative;
+	background-color: rgba(var(--color-link-rgb), 0.2);
 }
 
 .contact__form button[type='submit'] i {
 	position: absolute;
 	left: 0.3rem;
 	visibility: hidden;
+	color: rgba(var(--color-link-rgb), 0.9);
 }
 
-.contact__form button[type='submit'].loading{
-	border-color: rgba(var(--color-rgb), 0.8);
+.contact__form button[type='submit'].loading {
+	background-color: var(--secondary);
+	border-color: rgba(var(--color-rgb), 0.5);
+}
+
+.contact__form button[type='submit']:active {
+	border: 0.2rem solid var(--color-link);
+	transform: translate(0, 0.2rem);
+	background-color: rgba(var(--color-link-rgb), 0.5);
+	color: rgb(240, 248, 255);
 }
 
 .contact__form button[type='submit'].loading i {
