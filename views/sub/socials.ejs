@@ -1,7 +1,34 @@
 <section class="socials" id="socials🔗">
-	<a class="socials__link" href="<%= socials.linkedIn %> " target="_blank" title="Open LinkedIn profile">
-		<i class="fab fa-linkedin"></i>
-	</a>
+	<% if (socials.youtube) { %>
+		<a class="socials__link" href="<%= socials.youtube %> " target="_blank" title="Open Youtube profile">
+			<i class="fab fa-youtube"></i>
+		</a>
+	<% } %>
+	<% if (socials.twitch) { %>
+		<a class="socials__link" href="<%= socials.twitch %> " target="_blank" title="Open Twitch profile">
+			<i class="fab fa-twitch"></i>
+		</a>
+	<% } %>
+	<% if (socials.medium) { %>
+		<a class="socials__link" href="<%= socials.medium %> " target="_blank" title="Open Medium profile">
+			<i class="fab fa-medium"></i>
+		</a>
+	<% } %>
+	<% if (socials.titter) { %>
+		<a class="socials__link" href="<%= socials.twitter %> " target="_blank" title="Open Twitter profile">
+			<i class="fab fa-twitter"></i>
+		</a>
+	<% } %>
+	<% if (socials.facebook) { %>
+		<a class="socials__link" href="<%= socials.facebook %> " target="_blank" title="Open Facebook profile">
+			<i class="fab fa-facebook"></i>
+		</a>
+	<% } %>
+	<% if (socials.linkedIn) { %>
+		<a class="socials__link" href="<%= socials.linkedIn %> " target="_blank" title="Open LinkedIn profile">
+			<i class="fab fa-linkedin"></i>
+		</a>
+	<% } %>
 	<!-- github -->
 	<a class="socials__link" href="https://github.com/<%= githubUsername %> " target="_blank"
 		title="Open Github profile">
