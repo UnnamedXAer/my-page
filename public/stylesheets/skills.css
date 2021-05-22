@@ -13,6 +13,10 @@
 	position: relative;
 }
 
+.skills .lazy_loading {
+	height: 390px;
+}
+
 .skills figure figcaption {
 	font-size: 0.9em;
 	text-align: end;

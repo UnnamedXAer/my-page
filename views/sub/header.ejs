@@ -1,4 +1,5 @@
 <header class="header shadow">
+	<div class="header__scheme_switch" role="button"><i class="far fa-moon"></i><i class="far fa-sun"></i></div>
 	<div class="header__backdrop" onclick="hideMenu()"></div>
 	<a class="header__logo" href="/#🔝" aria-label="logo"><i class="far fa-file-code fa-2x"></i></a>
 	<div class="header__burger" onclick="toggleMenu(this)" role="button" tabindex="0" aria-label="trigger menu">
@@ -99,7 +100,7 @@
 			setMenuAvailability(burger, false);
 		}
 
-		burger.addEventListener('keyup', function(ev) {
+		burger.addEventListener('keyup', function (ev) {
 			if (ev.keyCode === 32 || ev.keyCode === 13) {
 				toggleMenu(ev.target);
 				ev.preventDefault();

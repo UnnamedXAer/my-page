@@ -13,7 +13,7 @@
 	flex-direction: row;
 	justify-content: space-between;
 	align-items: center;
-	background-color: #333333;
+	background-color: var(--secondary);
 	padding-left: 3rem;
 	padding-right: 3rem;
 }
@@ -26,6 +26,22 @@
 	-webkit-box-shadow: 0 3px 5px rgba(8, 8, 8, 0.3);
 	-moz-box-shadow: 0 3px 5px rgba(8, 8, 8, 0.3);
 	box-shadow: 0 3px 5px rgba(8, 8, 8, 0.3);
+}
+
+
+.header__scheme_switch{
+	font-size: 1.3rem;
+	border: 0.2rem solid var(--color);
+	padding: 0.3rem .2rem;
+	border-radius: 0.5rem;
+}
+
+[data-scheme=light] .header__scheme_switch i:nth-child(2) {
+	color: rgb(255, 238, 0);
+}
+
+[data-scheme=dark] .header__scheme_switch i:first-child {
+	color: rgb(243, 14, 91);
 }
 
 .header__logo {

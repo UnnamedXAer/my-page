@@ -1,8 +1,5 @@
-* {
-	box-sizing: border-box;
-}
-
 :root {
+	color-scheme: dark light;
 	--main: #121212;
 	--secondary: #333333;
 	--secondary-rgb: 51, 51, 51;
@@ -13,6 +10,20 @@
 	--color-link-rgb: 0, 152, 212;
 	--error: #b00020;
 	--error-rgb: 176, 0, 32;
+}
+
+[data-scheme='light'] {
+	--main: #f0f0f0;
+	--secondary: #dfdfdf;
+	--secondary-rgb: 223, 223, 223;
+	--accent: #702424;
+	--accent-rgb: 112, 36, 36;
+	--color: #333333;
+	--color-rgb: 51, 51, 51;
+}
+
+* {
+	box-sizing: border-box;
 }
 
 html {
