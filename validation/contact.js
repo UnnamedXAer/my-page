@@ -1,7 +1,7 @@
 const { default: validator } = require('validator');
 const { default: axios } = require('axios');
 const url = require('url');
-const { getConfig } = require('../state/state');
+const config = require('../config/config');
 
 async function validateContactForm(email, subject, message, reCAPTCHAResponse, remoteIP) {
 	const errors = {};
@@ -55,7 +55,6 @@ async function validateReCAPTCHA(reCAPTCHAResponse, remoteIP) {
 		return false;
 	}
 
-	const config = getConfig();
 	const verifyURL = 'https://www.google.com/recaptcha/api/siteverify';
 	const payload = {
 		secret: config.reCAPTCHAServerKey,
@@ -82,7 +81,7 @@ async function validateReCAPTCHA(reCAPTCHAResponse, remoteIP) {
 			`reCAPTCHA: removeIP: (${remoteIP}),  `,
 			err
 		);
-		return false + (config.env === 'production' ? '' : ': ' + err.toString());
+		return false;
 	}
 }
 

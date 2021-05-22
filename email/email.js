@@ -1,9 +1,8 @@
 const nodemailer = require('nodemailer');
 const { default: validator } = require('validator');
-const { getConfig } = require('../state/state');
+const config = require('../config/config');
 
 async function sendEmail(data) {
-	const config = getConfig();
 	const sanitizedData = sanitizeEmailPayload(data);
 
 	const transporter = nodemailer.createTransport({
