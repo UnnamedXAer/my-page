@@ -3,8 +3,12 @@
 		font-size: 1.1em;
 		justify-content: flex-end;
 	}
+	
+	.header nav a:hover {
+		text-decoration: none;
+	}
 
-	.about_me{
+	.about_me {
 		font-size: 1.4rem;
 	}
 
@@ -47,9 +51,6 @@
 		max-width: 90vw;
 		-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 		-webkit-tap-highlight-color: transparent;
-	}
-	.header nav a:hover {
-		transform: unset;
 	}
 
 	.header nav a:active {
