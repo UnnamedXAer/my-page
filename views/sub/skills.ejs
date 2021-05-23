@@ -13,7 +13,7 @@
 		document.querySelector(".skills__tech img")
 			.addEventListener("click", function (ev) {
 				const copy = ev.currentTarget.cloneNode(true);
-				copy.style.padding = "0.15rem dashed var(--color-link)"
+				copy.classList.add("skills__big_img");
 				const hideBackdrop = showBackdrop(copy);
 			});
 	</script>

@@ -11,6 +11,11 @@
 
 .skills figure {
 	position: relative;
+	box-shadow: 1rem 1rem 1rem 0px #0c0c0c;
+}
+
+[data-scheme='light'] .skills figure {
+	box-shadow: 1rem 1rem 1rem 0px #ccc;
 }
 
 .skills .lazy_loading {
@@ -30,4 +35,9 @@
 
 .skills figure:hover figcaption {
 	opacity: 0.9;
+}
+
+.skills__big_img {
+	border: 0.25rem dashed var(--color-link);
+	padding: 0.3rem;
 }
