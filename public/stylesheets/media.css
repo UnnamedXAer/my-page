@@ -1,4 +1,9 @@
 @media only screen and (max-width: 1080px) {
+	.header {
+		padding-left: 1.5rem;
+		padding-right: 1.5rem;
+	}
+
 	.header nav {
 		font-size: 1.1em;
 	}
@@ -52,6 +57,11 @@
 	.header nav a::after {
 		display: none;
 		font-size: 1em;
+	}
+
+	.header__scheme_switch {
+		margin-left: 1rem;
+		margin-right: 1rem;
 	}
 
 	.about_me {

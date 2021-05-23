@@ -68,7 +68,7 @@ a {
 	margin-left: 1rem;
 }
 
-.socials {
+.socials div {
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
@@ -174,4 +174,17 @@ a {
 
 .backdrop.active .backdrop__content > * {
 	display: block;
+}
+
+.footer__copyright {
+	opacity: 0.8;
+	text-align: end;
+	font-style: oblique;
+	margin-right: 1.5rem;
+	margin-left: 1.5rem;
+}
+
+.footer__copyright::before {
+	content: "\00A9 ";
+	font-size: 1.5em;
 }

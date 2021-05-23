@@ -1,8 +1,15 @@
 <header class="header shadow">
-	<div class="header__scheme_switch" role="button"><i class="far fa-moon"></i><i class="far fa-sun"></i></div>
 	<div class="header__backdrop" onclick="hideMenu()"></div>
-	<a class="header__logo" href="/#🔝" aria-label="logo"><i class="far fa-file-code fa-2x"></i></a>
-	<div class="header__burger" onclick="toggleMenu(this)" role="button" tabindex="0" aria-label="trigger menu">
+	<div class="header__wrapper_logo_schema">
+		<a class="header__logo" href="/#🔝" aria-label="logo">
+			<i class="far fa-file-code fa-2x"></i>
+		</a>
+		<button class="header__scheme_switch" aria-label="switch color schema">
+			<i class="far fa-moon"></i>
+			<i class="fas fa-sun"></i>
+		</button>
+	</div>
+	<div class="header__burger" onclick="toggleMenu(this)" role="button" tabindex="0" aria-label="toggle menu">
 		<div></div>
 		<div></div>
 		<div></div>
