@@ -1,0 +1,42 @@
+{
+	"short_name": "Portfolio",
+	"name": "Developer's Portfolio",
+	"icons": [
+		{
+			"src": "/images/icon/icon_16.png",
+			"type": "image/png",
+			"sizes": "16x16"
+		},
+		{
+			"src": "/images/icon/icon_32.png",
+			"type": "image/png",
+			"sizes": "32x32"
+		},
+		{
+			"src": "/images/icon/icon_96.png",
+			"type": "image/png",
+			"sizes": "96x96"
+		},
+		{
+			"src": "/images/icon/icon_180.png",
+			"type": "image/png",
+			"sizes": "180x180"
+		},
+		{
+			"src": "/images/icon/icon_180_maskable.png",
+			"sizes": "180x180",
+			"type": "image/png",
+			"purpose": "any maskable"
+		},
+		{
+			"src": "/images/icon/icon_512.png",
+			"sizes": "512x512",
+			"type": "image/png"
+		}
+	],
+	"scope": "/",
+	"start_url": "/#🔝",
+	"display": "standalone",
+	"theme_color": "#121212",
+	"background_color": "#121212"
+}

@@ -6,7 +6,8 @@
 				<% } %>
 					<% for( let i=0; i < repos.length; i++ ) { %>
 						<article class=" projects__repo">
-							<a href="<%= repos[i]['html_url'] %> " target="_blank" title="Open on GitHub">
+							<a href="<%= repos[i]['html_url'] %> " target="_blank" 
+								rel="noopener noreferrer" title="Open on GitHub">
 								<div class="projects__repo__info">
 									<h3>
 										<%= repos[i].name %>
@@ -35,8 +36,8 @@
 
 
 							<% if (repos[i].homepage) { %>
-								<a class="projects__repo__homepage" href="<%= repos[i].homepage %>" target="_blank"
-									title="Open app">
+								<a class="projects__repo__homepage" href="<%= repos[i].homepage %>" 
+									rel="noopener noreferrer" target="_blank" title="Open app">
 									<i class="fas fa-external-link-alt"></i>
 								</a>
 								<% } %>

@@ -6,17 +6,24 @@ const config = require('../config/config');
 const { validateContactForm } = require('../validation/contact');
 const url = require('url');
 
+function getDefaultProps() {
+	return {
+		title: config.ownerName || config.githubUsername,
+		ownerName: config.ownerName,
+		githubUsername: config.githubUsername
+	};
+}
+
 router.get('/', function (req, res, next) {
 	const state = getState();
 
 	const data = {
-		title: config.title || 'Me as a Developer',
+		...getDefaultProps(),
 		repos: state.repos,
 		socials: state.socials,
 		aboutMe: state.aboutMe.text,
 		education: state.education,
-		logoURL: config.logoURL,
-		githubUsername: config.githubUsername
+		logoURL: config.logoURL
 	};
 
 	res.render('index', data);
@@ -41,11 +48,14 @@ router.post('/contact', async function (req, res, next) {
 	);
 
 	const data = {
-		title: 'UnnamedXAer - Contact',
+		...getDefaultProps(),
+		ownerName: config.ownerName,
 		errors: errors,
 		form: values,
 		reCAPTCHAClientKey: config.reCAPTCHAClientKey
 	};
+
+	data.title += ' - Contact';
 
 	if (Object.keys(errors).length !== 0) {
 		data.error = 'Form contains errors, please correct them and submit again.';
@@ -76,21 +86,23 @@ router.get('/contact/success', function (req, res, next) {
 	const email = req.query['e'];
 
 	const data = {
-		title: 'UnnamedXAer - Contact',
+		...getDefaultProps(),
 		email: email
 	};
+	data.title += ' - Contact';
 
 	res.render('contact-success', data);
 });
 
 router.get('/contact*', function (req, res, next) {
 	const data = {
-		title: 'UnnamedXAer - Contact',
+		...getDefaultProps(),
 		form: {},
 		errors: {},
 		error: null,
 		reCAPTCHAClientKey: config.reCAPTCHAClientKey
 	};
+	data.title += ' - Contact';
 
 	res.render('contact', data);
 });
