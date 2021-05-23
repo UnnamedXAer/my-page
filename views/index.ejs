@@ -5,9 +5,27 @@
 			<%- include("sub/about-me") -%>
 				<%- include("sub/socials") -%>
 					<%- include("sub/projects.ejs") -%>
-					<%- include("sub/education.ejs") -%>
-					<%- include("sub/skills.ejs") -%>
+						<%- include("sub/education.ejs") -%>
+							<%- include("sub/skills.ejs") -%>
 		</main>
 
+		<script>
+			function updatePicksURLs() {
+				const figureEl = document.querySelector('.skills figure');
+				const elems = figureEl.querySelectorAll('picture *');
+				const imgScheme = document.body.dataset.scheme === 'light' ? '-light' : '';
+				const imgScrs = [
+					`/images/programming-por${imgScheme}.png`,
+					`/images/programming-land${imgScheme}.png`,
+					`/images/programming${imgScheme}.png`
+				];
+
+				elems.forEach((el, i) => {
+					el.srcset = imgScrs[i];
+				});
+
+				figureEl.classList.remove('lazy_loading');
+			}
+		</script>
+
 		<%- include("layout/footer.ejs") -%>
-			

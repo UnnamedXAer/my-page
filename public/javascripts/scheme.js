@@ -1,25 +1,9 @@
 (() => {
-	function updateSkillsPicksURLs() {
-		const figureEl = document.querySelector('.skills figure');
-		const elems = figureEl.querySelectorAll('picture *');
-		const imgScheme = document.body.dataset.scheme === 'light' ? '-light' : '';
-		console.log('updating picks', imgScheme);
-		const imgScrs = [
-			`/images/programming-por${imgScheme}.png`,
-			`/images/programming-land${imgScheme}.png`,
-			`/images/programming${imgScheme}.png`
-		];
-
-		elems.forEach((el, i) => {
-			el.srcset = imgScrs[i];
-		});
-
-		figureEl.classList.remove('lazy_loading');
-	}
+	const updatePicksURLsFunc =
+		typeof updatePicksURLs === 'function' ? updatePicksURLs : () => {};
 	function prefSchemaMatchChangeHandler(ev) {
-		console.log('pref scheme media changed');
 		document.body.dataset.scheme = psm.matches ? 'light' : 'dark';
-		updateSkillsPicksURLs();
+		updatePicksURLsFunc();
 	}
 
 	let prefSchemaMatch = null;
@@ -41,7 +25,6 @@
 		if (prefSchemaMatch) {
 			prefSchemaMatch.removeEventListener('change', prefSchemaMatchChangeHandler);
 		}
-		console.log('listener removed');
 		const currScheme = document.body.dataset.scheme;
 		let newScheme = 'dark';
 		if (currScheme === 'dark') {
@@ -49,8 +32,8 @@
 		}
 		document.body.dataset.scheme = newScheme;
 		localStorage.setItem('scheme', newScheme);
-		updateSkillsPicksURLs();
+		updatePicksURLsFunc();
 	});
 
-	updateSkillsPicksURLs();
+	updatePicksURLsFunc();
 })();
