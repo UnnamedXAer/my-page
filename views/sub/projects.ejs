@@ -36,7 +36,7 @@
 
 
 							<% if (repos[i].homepage) { %>
-								<a class="projects__repo__homepage" href="<%= repos[i].homepage %>" 
+								<a class="projects__repo__homepage" href="<%= repos[i].homepage %>"
 									rel="noopener noreferrer" target="_blank" title="Open app">
 									<i class="fas fa-external-link-alt"></i>
 								</a>
@@ -76,7 +76,7 @@
 				ev.target.setAttribute("aria-label", `Open <%= githubUsername %>'s Github repositories.`);
 				ev.target.setAttribute("role", 'link');
 				ev.target.removeEventListener("click", expandProjects);
-				ev.target.addEventListener("click", function(ev) {
+				ev.target.addEventListener("click", function (ev) {
 					const url = `https://github.com/<%= githubUsername %>?tab=repositories`;
 					window.open(url, "_blank")
 				});
